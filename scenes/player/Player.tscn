@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://1o4dxva7ye2s"]
+
+[ext_resource type="Script" uid="uid://bykp05skmfedn" path="res://scripts/player/player.gd" id="1_player"]
+[ext_resource type="Texture2D" uid="uid://pyfetpo8o2bp" path="res://assets/player/crosshair.png" id="2_gfjak"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+radius = 0.4
+height = 1.8
+
+[node name="Player" type="CharacterBody3D" unique_id=699744171 groups=["PlayerCharacter"]]
+collision_layer = 2
+script = ExtResource("1_player")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1645672834]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="CameraHolder" type="Node3D" parent="." unique_id=266503768]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="Camera" type="Camera3D" parent="CameraHolder" unique_id=1333128229]
+unique_name_in_owner = true
+current = true
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1916499687]
+
+[node name="Crosshair" type="TextureRect" parent="HUD" unique_id=1332600846]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_gfjak")

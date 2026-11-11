@@ -1,0 +1,11 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Godot 4: traducciones importadas desde CSV (generado)
+*.translation
+
+# Basura de SO
+.DS_Store
+Thumbs.db
+desktop.ini
