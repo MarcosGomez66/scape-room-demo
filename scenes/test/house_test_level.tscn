@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://qenkwbxhcko5"]
+
+[ext_resource type="PackedScene" uid="uid://cncnftvbhi4nx" path="res://scenes/environment/house/house.tscn" id="1_f38u6"]
+[ext_resource type="PackedScene" uid="uid://1o4dxva7ye2s" path="res://scenes/player/Player.tscn" id="2_0ll5a"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4cny8"]
+size = Vector3(60, 0.5, 60)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74ylu"]
+albedo_color = Color(0.16, 0.2, 0.14, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ylyn5"]
+size = Vector2(60, 60)
+
+[node name="HouseTestLevel" type="Node3D" unique_id=68745559]
+
+[node name="House" parent="." unique_id=1069368756 instance=ExtResource("1_f38u6")]
+
+[node name="ExteriorGround" type="StaticBody3D" parent="." unique_id=76679584]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExteriorGround" unique_id=1971304077]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+shape = SubResource("BoxShape3D_4cny8")
+
+[node name="ExteriorGroundVisual" type="MeshInstance3D" parent="." unique_id=772437948]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.295, 0)
+material_override = SubResource("StandardMaterial3D_74ylu")
+mesh = SubResource("PlaneMesh_ylyn5")
+
+[node name="Player" parent="." unique_id=699744171 instance=ExtResource("2_0ll5a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, 0.32, 1.5)

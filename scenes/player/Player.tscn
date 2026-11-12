@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://pyfetpo8o2bp" path="res://assets/player/crosshair.png" id="2_gfjak"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
-radius = 0.4
+radius = 0.3
 height = 1.8
 
 [node name="Player" type="CharacterBody3D" unique_id=699744171 groups=["PlayerCharacter"]]
