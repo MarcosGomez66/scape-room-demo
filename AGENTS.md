@@ -48,14 +48,48 @@ son un **controlador propio mínimo, sin FSM**: WASD para caminar, mantener Shif
 correr, mouse para mirar, Escape libera/recaptura el mouse. Sin salto, agacharse, slide,
 dash ni vuelo.
 
-- Acciones de input definidas en `project.godot`: `move_forward`, `move_backward`,
-  `move_left`, `move_right`, `run`, `toggle_mouse` (physical keycodes).
-  **`interact` (E) todavía no existe**: lo tiene que agregar el sistema de interacción del GDD.
-- Capas de física: 1 = mundo, 2 = jugador (el jugador no se ve a sí mismo y los raycasts
-  de interacción pueden ignorarlo).
-- HUD: solo la mira (`assets/player/crosshair.png`; ver `THIRD_PARTY.md`).
-- `scenes/test/test_level.tscn` es el nivel de prueba; `application/run/main_scene` apunta
-  ahí de forma temporal.
+- Acciones de input definidas en `project.godot` (physical keycodes): `move_forward`,
+  `move_backward`, `move_left`, `move_right`, `run`, `toggle_mouse`, `interact` (E) y
+  `slot_1` / `slot_2` / `slot_3` (1, 2 y 3 de la fila superior).
+- Capas de física (con nombre en `project.godot`): 1 = `world`, 2 = `player`,
+  4 = `interactable`. El jugador no se ve a sí mismo y el raycast de interacción usa
+  máscara 9 (world + interactable), así que lo ignora.
+- HUD (`scripts/ui/hud.gd`, `class_name Hud`): mira (`assets/player/crosshair.png`; ver
+  `THIRD_PARTY.md`), prompt de interacción debajo de la mira, panel de mensajes temporal
+  y barra de 3 slots de inventario abajo al centro.
+- `scenes/test/house_test_level.tscn` es el nivel jugable actual
+  (`application/run/main_scene`); `scenes/test/test_level.tscn` es el nivel plano viejo.
+
+## Interacción, puertas e inventario
+
+- **Base:** `scripts/interactables/interactable.gd` (`class_name Interactable extends
+  StaticBody3D`). Expone `prompt_text`, `enabled`, `get_prompt()` e `interact() -> String`
+  (el string es el mensaje para el HUD). Los interactuables que no deben bloquear el paso
+  usan solo la capa 4; los sólidos, 1 + 4 (valor 9).
+- **Raycast:** `Player/CameraHolder/Camera/InteractionRay` (`RayCast3D`, 2.2 m, máscara 9,
+  `scripts/player/interaction_ray.gd`) actualiza el prompt cada frame y con E llama a
+  `interact()` del objetivo.
+- **Inventario:** autoload `Inventory` (`scripts/managers/inventory.gd`): 3 slots fijos,
+  `selected_slot`, señales `slots_changed` / `selection_changed`. `add_item` autoselecciona
+  el slot nuevo; `remove_item` se usa para consumir la llave. Los objetos son
+  `ItemData` (`scripts/inventory/item_data.gd`); la llave del dormitorio vive en
+  `resources/items/key_bedroom.tres`.
+- **Puerta:** `scenes/interactables/Door.tscn` + `scripts/interactables/door.gd`
+  (`class_name Door`). Usa `SM_Puerta.glb`: el marco queda fijo y `_ready` reparenta
+  `SM_Hoja` + `SM_Pomo` bajo `Hinge`. **El `CollisionShape3D` de la hoja es hijo directo
+  del `StaticBody3D`** (Godot no registra shapes colgadas de un `Node3D` intermedio) y el
+  tween lo rota junto con la bisagra. Exportados: `required_item_id`, `locked`,
+  `open_angle_degrees`, `open_time`, `is_open`.
+- **Llave:** `scenes/collectibles/Key.tscn` + `scripts/collectibles/key.gd`
+  (`class_name KeyPickup`), capa 4 con luz de acento para que se vea en la casa nocturna.
+
+### Prueba jugable del dormitorio
+
+En `house_test_level.tscn`: el jugador arranca encerrado en el dormitorio mirando la
+puerta (`BedroomDoor`, bloqueada), la llave está tirada en el piso (`BedroomKey`) y el
+flujo esperado es: E en la puerta → mensaje de bloqueo; recoger la llave → queda en el
+slot 1; E en la puerta con la llave seleccionada → se consume la llave y la puerta se
+abre hacia el dormitorio.
 
 ## Assets de terceros
 

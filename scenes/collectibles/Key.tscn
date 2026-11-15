@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://c0rufqhhor6b4"]
+
+[ext_resource type="Script" uid="uid://dkvjp770lfwjb" path="res://scripts/collectibles/key.gd" id="1_ghq6b"]
+[ext_resource type="Resource" uid="uid://drx2vn45cdj6i" path="res://resources/items/key_bedroom.tres" id="2_633ht"]
+[ext_resource type="PackedScene" uid="uid://i4ysy6r35byw" path="res://assets/test/SM_Llave.glb" id="3_2cd0s"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_en54r"]
+size = Vector3(0.3, 0.2, 0.3)
+
+[node name="Key" type="StaticBody3D" unique_id=646955446]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_ghq6b")
+item = ExtResource("2_633ht")
+
+[node name="Model" parent="." unique_id=1386734473 instance=ExtResource("3_2cd0s")]
+transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, 1.5, 0, -1.5, -6.556708e-08, 0, 0.02, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=356414960]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07, 0)
+shape = SubResource("BoxShape3D_en54r")
+
+[node name="Glow" type="OmniLight3D" parent="." unique_id=1553871593]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+light_color = Color(1, 0.82, 0.45, 1)
+light_energy = 0.6
+omni_range = 1.2

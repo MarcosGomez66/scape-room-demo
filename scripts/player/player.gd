@@ -4,6 +4,9 @@ class_name PlayerController
 
 ## Minimal first-person controller for the escape room demo.
 ## WASD to move, hold Shift to run, mouse to look, Escape to release/recapture the mouse.
+## Keys 1-3 select an inventory slot.
+
+const SLOT_ACTIONS: Array[StringName] = [&"slot_1", &"slot_2", &"slot_3"]
 
 @export_group("Movement")
 @export var walk_speed: float = 4.5
@@ -33,7 +36,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			deg_to_rad(-max_pitch_degrees),
 			deg_to_rad(max_pitch_degrees),
 		)
-	elif event.is_action_pressed("toggle_mouse"):
+		return
+
+	for i: int in SLOT_ACTIONS.size():
+		if event.is_action_pressed(SLOT_ACTIONS[i]):
+			Inventory.select_slot(i)
+			return
+
+	if event.is_action_pressed("toggle_mouse"):
 		var captured: bool = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE if captured else Input.MOUSE_MODE_CAPTURED)
 

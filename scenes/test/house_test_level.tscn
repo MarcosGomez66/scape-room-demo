@@ -2,6 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://cncnftvbhi4nx" path="res://scenes/environment/house/house.tscn" id="1_f38u6"]
 [ext_resource type="PackedScene" uid="uid://1o4dxva7ye2s" path="res://scenes/player/Player.tscn" id="2_0ll5a"]
+[ext_resource type="PackedScene" uid="uid://18m3ifogy6uo" path="res://scenes/interactables/Door.tscn" id="3_4cny8"]
+[ext_resource type="PackedScene" uid="uid://c0rufqhhor6b4" path="res://scenes/collectibles/Key.tscn" id="4_74ylu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4cny8"]
 size = Vector3(60, 0.5, 60)
@@ -28,4 +30,10 @@ material_override = SubResource("StandardMaterial3D_74ylu")
 mesh = SubResource("PlaneMesh_ylyn5")
 
 [node name="Player" parent="." unique_id=699744171 instance=ExtResource("2_0ll5a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, 0.32, 1.5)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -2.6, 0.32, -1.96)
+
+[node name="BedroomDoor" parent="." unique_id=1265520474 instance=ExtResource("3_4cny8")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.62, 0.3, -1.96)
+
+[node name="BedroomKey" parent="." unique_id=646955446 instance=ExtResource("4_74ylu")]
+transform = Transform3D(0.90630776, 0, 0.42261827, 0, 1, 0, -0.42261827, 0, 0.90630776, -1.7, 0.33, -2.9)
