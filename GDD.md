@@ -85,12 +85,12 @@ La progresión estará dividida en tres etapas. Cada puzle proporciona una llave
 
 **Ubicación:** Dormitorio inicial.
 
-El jugador encuentra un ropero con caja fuerte de 5 símbolos
+El jugador encuentra un ropero con caja fuerte de 5 botones
 
 Elementos importantes:
 - Puerta cerrada con llave.
-- Ropero con caja fuerte.
-- Tres cuadros con símbolos.
+- Ropero con caja fuerte de 5 botones de diferentes colores.
+- Tres cuadros con objetos de color unico.
 - Escritorio con cajon y nota en su interior.
 
 Problema:
@@ -98,8 +98,8 @@ Problema:
 - La caja fuerte se desbloquea presionando 3 de 5 botones en orden correcto.
 
 Resolución:
-1. Los tres cuadros muestran un paisaje y un símbolo.
-2. La nota indica en que orden se presionan los botones mencionando los paisajes.
+1. Los tres cuadros muestran un objeto pintado de un color especifico.
+2. La nota indica en que orden se presionan los botones mencionando los objetos.
 
 **Recompensa:** Llave que permite salir del dormitorio y acceder al pasillo.
 
