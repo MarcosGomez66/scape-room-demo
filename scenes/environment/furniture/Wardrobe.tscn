@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://plbx1fukjcac"]
+
+[ext_resource type="Script" uid="uid://fhfvv0wgd2ox" path="res://scripts/environment/wardrobe.gd" id="1_7sym6"]
+[ext_resource type="PackedScene" uid="uid://b3ob566k37lms" path="res://assets/test/SM_Ropero.glb" id="2_7eldl"]
+[ext_resource type="Script" uid="uid://cpxic8r7fc7u1" path="res://scripts/interactables/wardrobe_door.gd" id="3_miapd"]
+[ext_resource type="Script" uid="uid://djp0t7oat0xjs" path="res://scripts/interactables/safe_door.gd" id="4_elbjh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xncms"]
+size = Vector3(1, 1.96, 0.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_koc70"]
+size = Vector3(0.03, 1.96, 0.55)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tvpqd"]
+size = Vector3(0.03, 1.96, 0.55)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m6gos"]
+size = Vector3(1, 0.03, 0.55)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i53oc"]
+size = Vector3(1, 0.13, 0.55)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6v0pr"]
+size = Vector3(0.47, 0.02, 0.51)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nsfx2"]
+size = Vector3(0.03, 0.5, 0.51)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b0kkm"]
+size = Vector3(0.43, 1.72, 0.04)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3jvvm"]
+size = Vector3(0.44, 1.72, 0.03)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qbj7g"]
+size = Vector3(0.39, 0.41, 0.03)
+
+[node name="Wardrobe" type="StaticBody3D" unique_id=1479066092]
+collision_mask = 0
+script = ExtResource("1_7sym6")
+
+[node name="Model" parent="." unique_id=2145555154 instance=ExtResource("2_7eldl")]
+
+[node name="CollisionBack" type="CollisionShape3D" parent="." unique_id=1395341657]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.24)
+shape = SubResource("BoxShape3D_xncms")
+
+[node name="CollisionLeft" type="CollisionShape3D" parent="." unique_id=152127558]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.485, 0.98, 0)
+shape = SubResource("BoxShape3D_koc70")
+
+[node name="CollisionRight" type="CollisionShape3D" parent="." unique_id=1913866399]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.485, 0.98, 0)
+shape = SubResource("BoxShape3D_tvpqd")
+
+[node name="CollisionTop" type="CollisionShape3D" parent="." unique_id=2039758000]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.945, 0)
+shape = SubResource("BoxShape3D_m6gos")
+
+[node name="CollisionBottom" type="CollisionShape3D" parent="." unique_id=706397974]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.065, 0)
+shape = SubResource("BoxShape3D_i53oc")
+
+[node name="CollisionShelf" type="CollisionShape3D" parent="." unique_id=519406571]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.245, 1.43, 0)
+shape = SubResource("BoxShape3D_6v0pr")
+
+[node name="CollisionDivider" type="CollisionShape3D" parent="." unique_id=1272632089]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.67, 0)
+shape = SubResource("BoxShape3D_nsfx2")
+
+[node name="RightDoorCollision" type="CollisionShape3D" parent="." unique_id=781141023]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.232, 1.01, 0.28)
+shape = SubResource("BoxShape3D_b0kkm")
+
+[node name="KeySpawn" type="Marker3D" parent="." unique_id=631335252]
+transform = Transform3D(0.99120283, 0, -0.13235176, 0, 1, 0, 0.13235176, 0, 0.99120283, -0.25, 1.46, 0.06)
+
+[node name="LeftDoor" type="StaticBody3D" parent="." unique_id=1803190998]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.448, 1.01, 0.28)
+collision_layer = 9
+collision_mask = 0
+script = ExtResource("3_miapd")
+
+[node name="LeafCollision" type="CollisionShape3D" parent="LeftDoor" unique_id=85470426]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.215, 0, 0)
+shape = SubResource("BoxShape3D_3jvvm")
+
+[node name="SafeDoor" type="StaticBody3D" parent="." unique_id=1590017074]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, 1.64, 0.26)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("4_elbjh")
+
+[node name="LeafCollision" type="CollisionShape3D" parent="SafeDoor" unique_id=298918369]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.195, 0, 0)
+shape = SubResource("BoxShape3D_qbj7g")

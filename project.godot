@@ -19,6 +19,9 @@ config/icon="res://icon.svg"
 
 MCPRuntimeServer="*res://addons/godot_mcp_toolkit/runtime/mcp_runtime_server.gd"
 Inventory="*uid://ccld7x56jgru3"
+PuzzleManager="*uid://de5s3k8bnol1p"
+GameManager="*uid://dap4ofrwgt1ui"
+PuzzleUI="*uid://df6ia87wdfqgw"
 
 [display]
 

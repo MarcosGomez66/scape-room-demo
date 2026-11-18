@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://cqgi3u404nwtq"]
+
+[ext_resource type="Script" uid="uid://b77oenxj0c2fi" path="res://scripts/ui/safe_window.gd" id="1_86wi3"]
+
+[node name="SafeWindow" type="Control" unique_id=1692380007]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_86wi3")
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=293726952]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.72)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=305953445]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="PanelContainer" parent="Center" unique_id=1061972696]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(560, 430)
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Center/Panel" unique_id=1501444543]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="Header" type="HBoxContainer" parent="Center/Panel/Content" unique_id=620670440]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Center/Panel/Content/Header" unique_id=1339914805]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.96, 0.93, 0.85, 1)
+theme_override_font_sizes/font_size = 26
+text = "Caja fuerte"
+
+[node name="CloseButton" type="Button" parent="Center/Panel/Content/Header" unique_id=574565899]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 36)
+layout_mode = 2
+text = "Cerrar"
+
+[node name="Hint" type="Label" parent="Center/Panel/Content" unique_id=1969222024]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.74, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "Presioná 3 colores en orden."
+horizontal_alignment = 1
+
+[node name="LightsRow" type="HBoxContainer" parent="Center/Panel/Content" unique_id=1784319245]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Light1" type="Panel" parent="Center/Panel/Content/LightsRow" unique_id=1292831246]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="Light2" type="Panel" parent="Center/Panel/Content/LightsRow" unique_id=989352732]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="Light3" type="Panel" parent="Center/Panel/Content/LightsRow" unique_id=839403620]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="Light4" type="Panel" parent="Center/Panel/Content/LightsRow" unique_id=200553481]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="Light5" type="Panel" parent="Center/Panel/Content/LightsRow" unique_id=121801123]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="ButtonsRow" type="HBoxContainer" parent="Center/Panel/Content" unique_id=1708678810]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="MagentaButton" type="Button" parent="Center/Panel/Content/ButtonsRow" unique_id=243938492]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+
+[node name="YellowButton" type="Button" parent="Center/Panel/Content/ButtonsRow" unique_id=2141551752]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+
+[node name="BlueButton" type="Button" parent="Center/Panel/Content/ButtonsRow" unique_id=1814071306]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+
+[node name="RedButton" type="Button" parent="Center/Panel/Content/ButtonsRow" unique_id=2081214462]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+
+[node name="GreenButton" type="Button" parent="Center/Panel/Content/ButtonsRow" unique_id=1526945169]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="Center/Panel/Content" unique_id=1063101930]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.76, 0.42, 1)
+theme_override_font_sizes/font_size = 17
+horizontal_alignment = 1
+vertical_alignment = 1

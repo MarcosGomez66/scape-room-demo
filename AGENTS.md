@@ -55,8 +55,9 @@ dash ni vuelo.
   4 = `interactable`. El jugador no se ve a sí mismo y el raycast de interacción usa
   máscara 9 (world + interactable), así que lo ignora.
 - HUD (`scripts/ui/hud.gd`, `class_name Hud`): mira (`assets/player/crosshair.png`; ver
-  `THIRD_PARTY.md`), prompt de interacción debajo de la mira, panel de mensajes temporal
-  y barra de 3 slots de inventario abajo al centro.
+  `THIRD_PARTY.md`), prompt de interacción debajo de la mira, panel de mensajes temporal,
+  barra de 3 slots de inventario abajo al centro y contador de fallos (`StrikeLabel`,
+  arriba a la derecha, formato `Fallos: X - -`).
 - `scenes/test/house_test_level.tscn` es el nivel jugable actual
   (`application/run/main_scene`); `scenes/test/test_level.tscn` es el nivel plano viejo.
 
@@ -83,13 +84,85 @@ dash ni vuelo.
 - **Llave:** `scenes/collectibles/Key.tscn` + `scripts/collectibles/key.gd`
   (`class_name KeyPickup`), capa 4 con luz de acento para que se vea en la casa nocturna.
 
+## Puzle del dormitorio: estado de partida y UI modal
+
+Tres autoloads (registrados en `project.godot`) sostienen el puzle:
+
+- **`PuzzleManager`** (`scripts/managers/puzzle_manager.gd`): paleta de 5 colores
+  (`COLORS`: id, nombre, pista y textura) y datos generados. `picture_colors` son los 3
+  colores distintos que cuelgan en los cuadros; `sequence` es un reordenamiento
+  aleatorio independiente de esos mismos 3 colores y es la combinación de la caja.
+  `safe_solved` + señal `safe_solved_changed`; helpers `color_data`, `texture_for`,
+  `clue_for`, `check_answer`, `mark_solved` y `generate()`. Las 5 imágenes viven en
+  `assets/test/img/` (`orquidea_magenta`, `taxi_amarillo`, `globo_azul`,
+  `telefono_rojo`, `cactus_verde`), todas de 1200×896.
+- **`GameManager`** (`scripts/managers/game_manager.gd`): `MAX_STRIKES = 3`, `strikes`,
+  `is_game_over`, señales `strikes_changed(strikes)` / `game_over`. `add_strike()` y
+  `restart_game()`, que resetea fallos, llama `Inventory.clear()` y
+  `PuzzleManager.generate()`, cierra la UI, despausa y recarga la escena actual.
+- **`PuzzleUI`** (`scripts/ui/puzzle_ui.gd`): `CanvasLayer` con `layer = 100` y
+  `PROCESS_MODE_ALWAYS`; instancia `scenes/ui/safe_window.tscn`,
+  `scenes/ui/note_window.tscn` y `scenes/ui/game_over_window.tscn`. Cualquier
+  interactuable llama `PuzzleUI.open_safe()` / `open_note()`; mientras hay un modal
+  abierto pausa el árbol y muestra el mouse. Escape (`toggle_mouse`) y el botón Cerrar
+  vuelven al juego.
+
+Ventanas:
+
+- **Caja fuerte** (`scripts/ui/safe_window.gd`): fila de 5 foquitos (uno por botón) y
+  fila de 5 botones circulares en orden **magenta, amarillo, azul, rojo, verde**.
+  Máximo 3 pulsaciones; un botón ya pulsado no se puede repetir en el mismo intento.
+  3 aciertos → `mark_solved()` y cierre; 3 fallos → strike, se limpia el intento tras
+  1 s. Con 3 strikes totales se dispara el game over y se bloquea el puzle.
+- **Nota** (`scripts/ui/note_window.gd`): fondo tipo papel con 3 labels en el orden
+  exacto de la solución, formato `1. <pista>`; la pista nunca nombra el objeto ni el
+  color.
+- **Game over** (`scripts/ui/game_over_window.gd`): overlay a pantalla completa con
+  botón Reiniciar (`GameManager.restart_game()`), que genera una combinación nueva.
+
+### Muebles e interactuables del puzle
+
+- **Ropero** (`scenes/environment/furniture/Wardrobe.tscn`, root `StaticBody3D` con
+  `scripts/environment/wardrobe.gd`): colisiones huecas (fondo, laterales, techo, base,
+  estante y divisor) y `KeySpawn` (`Marker3D`) para la llave. `LeftDoor`
+  (`scripts/interactables/wardrobe_door.gd`) abre una sola vez a −90° y se deshabilita;
+  `SafeDoor` (`scripts/interactables/safe_door.gd`) abre la ventana del puzle y, al
+  resolverse, gira +90° y se deshabilita. Ambas usan el **origen del `StaticBody3D` como
+  bisagra** (`reparent(self, true)` de la hoja) para que mesh y colisión giren juntos,
+  sin nodo `Hinge`; el `SafeDoor` reparenta además los cinco `SM_Boton*`, que en el GLB
+  son piezas sueltas sobre la hoja. La puerta de la caja anima con
+  `Tween.TWEEN_PAUSE_PROCESS`, porque la ventana tiene el árbol pausado.
+- **Escritorio** (`scenes/environment/furniture/Desk.tscn`): `Drawer`
+  (`scripts/interactables/desk_drawer.gd`) extrae el cajón 0.3 m (reparenta las piezas
+  del GLB), y al terminar habilita `Drawer/Note` (`scripts/interactables/note_item.gd`),
+  que arranca con capa 0, `enabled = false` e invisible. Dentro hay un `Paper` blanco.
+- **Cuadros** (`scenes/environment/props/PictureFrame.tscn` +
+  `scripts/environment/picture_frame.gd`): `picture_slot`, `picture_color` y
+  `texture_override` permiten fijar la imagen al instanciar; por defecto toman
+  `PuzzleManager.picture_colors[slot]` y aplican la textura como `material_override`
+  unshaded sobre `Model/SM_Img`. El GLB exporta la placa con UV de atlas recortadas y
+  ejes intercambiados (se veía un cuadrante girado 90°), así que el script le reemplaza
+  el mesh por un `QuadMesh` de 0.40×0.30 en `z = 0.002` con UV 0–1.
+
+Gotchas del GLB: los nodos importados reemplazan puntos por guiones bajos
+(`SM_Frente_001`, `SM_Boton_001`). Todo `CollisionShape3D` va como hijo directo del
+`CollisionObject3D`.
+
 ### Prueba jugable del dormitorio
 
 En `house_test_level.tscn`: el jugador arranca encerrado en el dormitorio mirando la
-puerta (`BedroomDoor`, bloqueada), la llave está tirada en el piso (`BedroomKey`) y el
-flujo esperado es: E en la puerta → mensaje de bloqueo; recoger la llave → queda en el
-slot 1; E en la puerta con la llave seleccionada → se consume la llave y la puerta se
-abre hacia el dormitorio.
+puerta (`BedroomDoor`, bloqueada). No hay llave en el piso: el flujo es abrir la puerta
+izquierda del ropero (`Wardrobe`) → interactuar con la caja fuerte → resolver la
+combinación de 3 colores → la puerta de la caja se abre y aparece la llave en
+`KeySpawn` → recogerla (queda en el slot 1) → E en `BedroomDoor` la consume y la abre
+hacia el dormitorio. La nota del cajón (`Desk/Drawer/Note`) da el orden
+correcto; los 3 cuadros indican qué color corresponde a cada pista. Tres intentos
+fallidos en la caja terminan la partida y el botón Reiniciar relanza la escena con una
+combinación nueva.
+
+El nivel coloca `Wardrobe` en `(-3.05, 0.30, -3.86)`, `Desk` en
+`(-1.65, 0.30, -3.86)` y los cuadros `PictureFrameLeft/Center/Right` en
+`x = -3.0 / -2.25 / -1.5`, `y = 1.55`, `z = -1.17`, rotados 180° en Y, con slots 0/1/2.
 
 ## Assets de terceros
 

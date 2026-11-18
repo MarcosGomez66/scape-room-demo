@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://bae4re8dd4rid"]
+
+[ext_resource type="PackedScene" uid="uid://d1cvd0fgqde2d" path="res://assets/test/SM_Escritorio.glb" id="1_apgr1"]
+[ext_resource type="Script" uid="uid://skn6x36ag16y" path="res://scripts/interactables/desk_drawer.gd" id="2_7tmi7"]
+[ext_resource type="Script" uid="uid://b6p6weewso04x" path="res://scripts/interactables/note_item.gd" id="3_3c6xr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8qsd3"]
+size = Vector3(1, 0.75, 0.44)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5sff8"]
+size = Vector3(0.39, 0.12, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ocrxq"]
+shading_mode = 0
+albedo_color = Color(0.97, 0.95, 0.88, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_7vmug"]
+size = Vector2(0.3, 0.22)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ealjx"]
+size = Vector3(0.3, 0.06, 0.22)
+
+[node name="Desk" type="StaticBody3D" unique_id=308303754]
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=55597656 instance=ExtResource("1_apgr1")]
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=330606142]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, -0.06)
+shape = SubResource("BoxShape3D_8qsd3")
+
+[node name="Drawer" type="StaticBody3D" parent="." unique_id=335474895]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("2_7tmi7")
+
+[node name="DrawerCollision" type="CollisionShape3D" parent="Drawer" unique_id=814979777]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.66, 0.21)
+shape = SubResource("BoxShape3D_5sff8")
+
+[node name="Paper" type="MeshInstance3D" parent="Drawer" unique_id=476773775]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.625, 0.05)
+material_override = SubResource("StandardMaterial3D_ocrxq")
+mesh = SubResource("QuadMesh_7vmug")
+
+[node name="Note" type="StaticBody3D" parent="Drawer" unique_id=1567452804]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.63, 0.05)
+visible = false
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("3_3c6xr")
+enabled = false
+
+[node name="NoteCollision" type="CollisionShape3D" parent="Drawer/Note" unique_id=798070245]
+shape = SubResource("BoxShape3D_ealjx")

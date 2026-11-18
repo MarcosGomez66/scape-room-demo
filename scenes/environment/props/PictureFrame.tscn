@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://6loo1eutllye"]
+
+[ext_resource type="Script" uid="uid://dnb17pbskwo6o" path="res://scripts/environment/picture_frame.gd" id="1_hkseh"]
+[ext_resource type="PackedScene" uid="uid://buf2slnigmv27" path="res://assets/test/SM_Cuadro.glb" id="2_70ii0"]
+
+[node name="PictureFrame" type="Node3D" unique_id=785427848]
+script = ExtResource("1_hkseh")
+
+[node name="Model" parent="." unique_id=675161792 instance=ExtResource("2_70ii0")]

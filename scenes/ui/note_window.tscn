@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://dbkmaerkitj8u"]
+
+[ext_resource type="Script" uid="uid://b0tk3qmv2marm" path="res://scripts/ui/note_window.gd" id="1_wskmr"]
+
+[node name="NoteWindow" type="Control" unique_id=1573255904]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_wskmr")
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=753616089]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.6)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=576463913]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Paper" type="PanelContainer" parent="Center" unique_id=40301645]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(640, 450)
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Center/Paper" unique_id=616774481]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Header" type="HBoxContainer" parent="Center/Paper/Content" unique_id=1841452015]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Center/Paper/Content/Header" unique_id=709157141]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.14, 0.12, 0.1, 1)
+theme_override_font_sizes/font_size = 28
+text = "Nota"
+
+[node name="CloseButton" type="Button" parent="Center/Paper/Content/Header" unique_id=605377816]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 36)
+layout_mode = 2
+text = "Cerrar"
+
+[node name="Clue1" type="Label" parent="Center/Paper/Content" unique_id=341329805]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 84)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.16, 0.14, 0.11, 1)
+theme_override_constants/line_spacing = 6
+theme_override_font_sizes/font_size = 19
+autowrap_mode = 3
+
+[node name="Clue2" type="Label" parent="Center/Paper/Content" unique_id=1230746232]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 84)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.16, 0.14, 0.11, 1)
+theme_override_constants/line_spacing = 6
+theme_override_font_sizes/font_size = 19
+autowrap_mode = 3
+
+[node name="Clue3" type="Label" parent="Center/Paper/Content" unique_id=703698294]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 84)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.16, 0.14, 0.11, 1)
+theme_override_constants/line_spacing = 6
+theme_override_font_sizes/font_size = 19
+autowrap_mode = 3

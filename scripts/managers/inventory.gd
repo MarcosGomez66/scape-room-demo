@@ -61,6 +61,14 @@ func remove_item(item_id: StringName) -> bool:
 	return true
 
 
+## Empties every slot and reselects the first one.
+func clear() -> void:
+	slots.fill(null)
+	selected_slot = 0
+	slots_changed.emit()
+	selection_changed.emit(selected_slot)
+
+
 func select_slot(index: int) -> void:
 	if index < 0 or index >= slots.size() or index == selected_slot:
 		return

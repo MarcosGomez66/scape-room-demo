@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://besb5um075lhl"]
+
+[ext_resource type="Script" uid="uid://ck8a1inbj445j" path="res://scripts/ui/game_over_window.gd" id="1_eq1ts"]
+
+[node name="GameOverWindow" type="Control" unique_id=1303756387]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_eq1ts")
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=388096142]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.85)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1755635008]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="PanelContainer" parent="Center" unique_id=899771894]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(520, 300)
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Center/Panel" unique_id=2035031845]
+layout_mode = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="Title" type="Label" parent="Center/Panel/Content" unique_id=1984386269]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.3, 0.26, 1)
+theme_override_font_sizes/font_size = 34
+text = "Fin del juego"
+horizontal_alignment = 1
+
+[node name="Message" type="Label" parent="Center/Panel/Content" unique_id=692737824]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.87, 1)
+theme_override_font_sizes/font_size = 19
+text = "Fallaste 3 veces."
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="Center/Panel/Content" unique_id=835236974]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Reiniciar"

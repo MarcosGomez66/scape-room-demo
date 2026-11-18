@@ -10,6 +10,7 @@ const SLOT_COUNT: int = 3
 @onready var message_panel: PanelContainer = %MessagePanel
 @onready var message_label: Label = %MessageLabel
 @onready var crosshair: TextureRect = $Crosshair
+@onready var strike_label: Label = %StrikeLabel
 @onready var slot_panels: Array[PanelContainer] = [%Slot1, %Slot2, %Slot3]
 @onready var slot_labels: Array[Label] = [%Slot1Label, %Slot2Label, %Slot3Label]
 
@@ -24,9 +25,11 @@ func _ready() -> void:
 	_style_labels()
 	Inventory.slots_changed.connect(_refresh_slots)
 	Inventory.selection_changed.connect(_on_selection_changed)
+	GameManager.strikes_changed.connect(_on_strikes_changed)
 	prompt_label.visible = false
 	message_panel.visible = false
 	_refresh_slots()
+	_on_strikes_changed(GameManager.strikes)
 
 
 func show_prompt(text: String) -> void:
@@ -63,6 +66,17 @@ func _on_selection_changed(_slot_index: int) -> void:
 	_refresh_slots()
 
 
+func _on_strikes_changed(count: int) -> void:
+	var text: String = "Fallos:"
+	for i: int in GameManager.MAX_STRIKES:
+		text += " X" if i < count else " -"
+	strike_label.text = text
+	var color: Color = Color(0.92, 0.94, 0.96)
+	if count > 0:
+		color = Color(1.0, 0.42, 0.34) if count >= GameManager.MAX_STRIKES else Color(1.0, 0.72, 0.32)
+	strike_label.add_theme_color_override("font_color", color)
+
+
 func _refresh_slots() -> void:
 	for i: int in SLOT_COUNT:
 		var item: ItemData = Inventory.slots[i] if i < Inventory.slots.size() else null
@@ -91,6 +105,10 @@ func _style_labels() -> void:
 
 	message_label.add_theme_font_size_override("font_size", 18)
 	message_label.add_theme_color_override("font_color", Color(0.95, 0.96, 0.98))
+
+	strike_label.add_theme_font_size_override("font_size", 17)
+	strike_label.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 0.85))
+	strike_label.add_theme_constant_override("outline_size", 5)
 
 	for label: Label in slot_labels:
 		label.add_theme_font_size_override("font_size", 15)

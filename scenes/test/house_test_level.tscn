@@ -3,7 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://cncnftvbhi4nx" path="res://scenes/environment/house/house.tscn" id="1_f38u6"]
 [ext_resource type="PackedScene" uid="uid://1o4dxva7ye2s" path="res://scenes/player/Player.tscn" id="2_0ll5a"]
 [ext_resource type="PackedScene" uid="uid://18m3ifogy6uo" path="res://scenes/interactables/Door.tscn" id="3_4cny8"]
-[ext_resource type="PackedScene" uid="uid://c0rufqhhor6b4" path="res://scenes/collectibles/Key.tscn" id="4_74ylu"]
+[ext_resource type="PackedScene" uid="uid://plbx1fukjcac" path="res://scenes/environment/furniture/Wardrobe.tscn" id="4_ylyn5"]
+[ext_resource type="PackedScene" uid="uid://bae4re8dd4rid" path="res://scenes/environment/furniture/Desk.tscn" id="5_ow0y3"]
+[ext_resource type="PackedScene" uid="uid://6loo1eutllye" path="res://scenes/environment/props/PictureFrame.tscn" id="6_fr5gi"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4cny8"]
 size = Vector3(60, 0.5, 60)
@@ -35,5 +37,19 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -2.6
 [node name="BedroomDoor" parent="." unique_id=1265520474 instance=ExtResource("3_4cny8")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.62, 0.3, -1.96)
 
-[node name="BedroomKey" parent="." unique_id=646955446 instance=ExtResource("4_74ylu")]
-transform = Transform3D(0.90630776, 0, 0.42261827, 0, 1, 0, -0.42261827, 0, 0.90630776, -1.7, 0.33, -2.9)
+[node name="Wardrobe" parent="." unique_id=1479066092 instance=ExtResource("4_ylyn5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.05, 0.3, -3.86)
+
+[node name="Desk" parent="." unique_id=308303754 instance=ExtResource("5_ow0y3")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.9672986, 0.3, -3.5537488)
+
+[node name="PictureFrameLeft" parent="." unique_id=785427848 instance=ExtResource("6_fr5gi")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3.6187222, 1.55, -2.0512843)
+
+[node name="PictureFrameCenter" parent="." unique_id=87905527 instance=ExtResource("6_fr5gi")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.722809, 1.55, -1.17)
+picture_slot = 1
+
+[node name="PictureFrameRight" parent="." unique_id=38594339 instance=ExtResource("6_fr5gi")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.5, 1.55, -1.17)
+picture_slot = 2
