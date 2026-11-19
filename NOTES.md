@@ -1,12 +1,13 @@
 # cosas que hacer
-- crear la escena del ropero:
+
+- [Hecho] crear la escena del ropero:
 	- se debe poder interactuar con la puerta izquierda para abrir
 	- al abrir la puerta del ropero dejarla siempre abierta a 90 grados (bloquear interaccion)
 	- se debe poder interactuar con la puerta de la caja fuerte dentro del ropero para desplegar la ventana del puzle
 	- una vez resuelto el puzle dejar la puerta de la caja fuerte siempre abierta a 90 grados (tambien bloquear interaccion)
 	- en el espacio de la caja fuerte se debe poder instanciar la llave de la habitacion
 	
-- crear la ventana (control) para el puzle de la caja fuerte:
+- [Hecho] crear la ventana (control) para el puzle de la caja fuerte:
 	- una fila que contenga un label "Caja fuerte" en la izquierda y un boton para cerrar a la derecha
 	- una fila de 5 cuadrados que representen unos foquitos de luz roja para indicar el boton que ya fue presionado
 	- una fila de 5 botones circulos de colores (de izquierda a derecha: magenta, amarillo, azul, rojo, verde)
@@ -14,20 +15,20 @@
 	- al pulsar 3 botones incorrectamente se reinicia el estado del puzle y se aplica la penalizacion
 	- al pulsar los botones correspondientes se abre la puerta
 
-- crear la escena del escritorio:
+- [Hecho] crear la escena del escritorio:
 	- se debe poder interactuar con el escritorio para extraer el cajon
 	- crear un plano blanco para representar el papel dentro del cajon
 	- al extraer el cajon se debe poder ver e interactuar con la nota dentro del cajon
 	- al interactuar con la nota se debe desplegar la ventana de la nota
 
-- crear la ventana (control) de la nota:
+- [Hecho] crear la ventana (control) de la nota:
 	- un fondo blanco para representar el papel
 	- columna de 3 labels para las pistas 
 
-- crear la escena para los cuadros:
+- [Hecho] crear la escena para los cuadros:
 	- el cuadro debe tener un espacio para asignar la imagen correspondiente al instanciar
 	
-- crear el sistema del puzle, su generacion aleatoria que se ejecuta al iniciar el juego:
+- [Hecho] crear el sistema del puzle, su generacion aleatoria que se ejecuta al iniciar el juego:
 	- seleccionar aleatoriamente tres colores de los 5 posibles sin repetir (magenta, amarillo, azul, rojo, verde) y el orden de estos
 	- asignar correctamente la imagen a los 3 cuadros de la escena segun los colores correctos (no importa el orden)
 	- asignar en la nota las leyendas correspondientes segun cada color y orden
@@ -36,7 +37,7 @@
 	- comprobar que los colores pulsados y el orden sea correcto
 	- permitir obtener la llave al presionar correctamente los botones
 	
-- crear sistema de penalizacion:
+- [Hecho] crear sistema de penalizacion:
 	- cada vez que se ingrese una combinacion incorrecta el jugador recibe un strike
 	- tres strikes finaliza el juego
 
@@ -55,3 +56,43 @@ Una centinela de hierro en la acera que guarda voces perdidas.
 
 ## Cactus_verde
 una fortaleza viviente de espinas y pliegues que desafía la sequedad.
+
+- crear la escena del sofa:
+	- con static body lo suficientemente detallado para instanciar encima la tarjeta y las almohadas
+	
+- crear la escena de la almohada y la tarjeta:
+	- la almohada se debe poder recoger con E
+	- la tarjeta es un plano con la imagen correspondiente en una cara
+	- la tarjeta solo se puede ver, no recoger
+	- al interactuar con la tarjeta se despliega su ventana igual que la nota
+	
+- crear la ventana de la tarjeta:
+	- se muestra un panel con la imagen correspondiente
+	
+- implementar dos cambios al inventario y sistema de traslado de objetos:
+	- mostrar el objeto seleccionado en la vista del jugador como si lo llevara en la mano
+	- permitir soltar el objeto con F
+
+- crear la escena de la cerradura numerica:
+	- con un var export password: int = 2805
+	- se debe poder interactuar con la cerradura
+	- al interactuar se debe mostrar la ventana de la cerradura numerica
+	
+- crear ventana de la cerradura:
+	- una fila que contenga un label "Cerradura" en la izquierda y un boton para cerrar a la derecha
+	- una fila con un label que muestra los numeros presionados
+	- una fila con los botones "X" (para reiniciar), "0" y "✓" (para comprobar)
+	- una fila con "1", "2" y "3"
+	- una fila con "4", "5" y "6"
+	- una fila con "7", "8" y "9"
+	- si se introduce un codigo incorrecto se suma un strike (los strikes son globales, no por puzle) y se reinicia
+	- si se introduce el codigo correcto se desbloquea la puerta vinculada
+
+- crear el sistema del segundo puzle:
+	- sobre el sofa se crean 3 lugares donde puede estar la tarjeta
+	- en cada lugar tambien debe ir una almohada encima
+	- la idea es que el jugador deba recoger y soltar las almohadas hasta revelar la tarjeta debajo
+	- modificar house_test_level para colocar los objetos del segundo puzle
+	- la puerta se abre hacia la cocina
+	- colocar la cerradura numerica al lado de la puerta
+	- comprobar que la contraseña sea la correcta para desbloquear la puerta

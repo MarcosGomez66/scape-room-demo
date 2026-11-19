@@ -107,16 +107,15 @@ Resolución:
 
 **Ubicación:** Sala de estar.
 
-En el pasillo el jugador encuentra la puerta de la cocina cerrada con una cerradura de código y una nota que indica que la contraseña se encuentra en la sala de estar.
+En el pasillo el jugador encuentra la puerta de la cocina cerrada con una cerradura de código.
 (este pasillo también conecta la sala de estar, el baño y la entrada principal)
 
 Elementos:
 - Puerta con cerradura de código (4 dígitos).
-- Puerta accesible a la sala de estar.
-- Sofá con almohadones extraibles.
+- Sofá con almohadas extraibles.
 
 Resolución:
-1. El jugador levanta los almohadones y encuentra una nota con la contraseña.
+1. El jugador levanta las almohadas y encuentra una tarjeta con la contraseña.
 
 **Recompensa:** Código que permite acceder a la cocina.
 
