@@ -61,6 +61,18 @@ func remove_item(item_id: StringName) -> bool:
 	return true
 
 
+## Removes the selected item so the player can drop it back into the world.
+func remove_selected() -> ItemData:
+	var item: ItemData = get_selected_item()
+	if item == null:
+		return null
+	slots[selected_slot] = null
+	selected_slot = _first_filled_slot()
+	slots_changed.emit()
+	selection_changed.emit(selected_slot)
+	return item
+
+
 ## Empties every slot and reselects the first one.
 func clear() -> void:
 	slots.fill(null)

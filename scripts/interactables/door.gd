@@ -51,6 +51,16 @@ func interact() -> String:
 	return ""
 
 
+## Unlocks without consuming an item. Used by the numeric lock puzzle.
+func unlock() -> void:
+	if is_open and not locked:
+		return
+	locked = false
+	_set_open(true)
+	enabled = false
+	collision_layer = 0
+
+
 func _move_leaf_to_hinge(part_name: String) -> void:
 	var part: Node3D = model.get_node_or_null(part_name) as Node3D
 	if part != null:

@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bvbaxvcssk1s2"]
+
+[ext_resource type="Script" uid="uid://cnyg60wbv3ogu" path="res://scripts/interactables/number_lock.gd" id="1_xhn4s"]
+[ext_resource type="PackedScene" uid="uid://cbl0n7lfgoj2f" path="res://assets/test/SM_Cerradura_numerica.glb" id="2_o1a3t"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mxgub"]
+size = Vector3(0.14, 0.24, 0.05)
+
+[node name="NumberLock" type="StaticBody3D" unique_id=155750586]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_xhn4s")
+
+[node name="Model" parent="." unique_id=1129656875 instance=ExtResource("2_o1a3t")]
+transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1096718127]
+shape = SubResource("BoxShape3D_mxgub")

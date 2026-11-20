@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://plbx1fukjcac" path="res://scenes/environment/furniture/Wardrobe.tscn" id="4_ylyn5"]
 [ext_resource type="PackedScene" uid="uid://bae4re8dd4rid" path="res://scenes/environment/furniture/Desk.tscn" id="5_ow0y3"]
 [ext_resource type="PackedScene" uid="uid://6loo1eutllye" path="res://scenes/environment/props/PictureFrame.tscn" id="6_fr5gi"]
+[ext_resource type="PackedScene" uid="uid://c8kicv4dofm8x" path="res://scenes/environment/furniture/Sofa.tscn" id="7_fr5gi"]
+[ext_resource type="PackedScene" uid="uid://bvbaxvcssk1s2" path="res://scenes/interactables/NumberLock.tscn" id="8_6oa4q"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4cny8"]
 size = Vector3(60, 0.5, 60)
@@ -53,3 +55,15 @@ picture_slot = 1
 [node name="PictureFrameRight" parent="." unique_id=38594339 instance=ExtResource("6_fr5gi")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.5, 1.55, -1.17)
 picture_slot = 2
+
+[node name="Sofa" parent="." unique_id=869360623 instance=ExtResource("7_fr5gi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 0.3, 0.5)
+
+[node name="KitchenDoor" parent="." unique_id=755278664 instance=ExtResource("3_4cny8")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.57, 0.3, -1.19)
+required_item_id = ""
+open_angle_degrees = 90.0
+
+[node name="NumberLock" parent="." unique_id=155750586 instance=ExtResource("8_6oa4q")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.5, 1.25, -0.55)
+linked_door = NodePath("../KitchenDoor")

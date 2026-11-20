@@ -11,6 +11,7 @@ height = 1.8
 
 [node name="Player" type="CharacterBody3D" unique_id=699744171 groups=["PlayerCharacter"]]
 collision_layer = 2
+collision_mask = 13
 script = ExtResource("1_player")
 
 [node name="Collision" type="CollisionShape3D" parent="." unique_id=1645672834]
@@ -28,6 +29,9 @@ current = true
 target_position = Vector3(0, 0, -2.2)
 collision_mask = 9
 script = ExtResource("2_524rm")
+
+[node name="HandAnchor" type="Node3D" parent="CameraHolder/Camera" unique_id=465453285]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, -0.3, -0.6)
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1916499687]
 unique_name_in_owner = true

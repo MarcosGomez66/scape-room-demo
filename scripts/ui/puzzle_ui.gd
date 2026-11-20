@@ -6,10 +6,14 @@ extends CanvasLayer
 const SAFE_WINDOW_SCENE: PackedScene = preload("res://scenes/ui/safe_window.tscn")
 const NOTE_WINDOW_SCENE: PackedScene = preload("res://scenes/ui/note_window.tscn")
 const GAME_OVER_WINDOW_SCENE: PackedScene = preload("res://scenes/ui/game_over_window.tscn")
+const CARD_WINDOW_SCENE: PackedScene = preload("res://scenes/ui/card_window.tscn")
+const NUMBER_LOCK_WINDOW_SCENE: PackedScene = preload("res://scenes/ui/number_lock_window.tscn")
 
 var safe_window: SafeWindow
 var note_window: NoteWindow
 var game_over_window: GameOverWindow
+var card_window: CardWindow
+var number_lock_window: NumberLockWindow
 
 var _modal_open: bool = false
 
@@ -20,11 +24,17 @@ func _ready() -> void:
 	safe_window = SAFE_WINDOW_SCENE.instantiate() as SafeWindow
 	note_window = NOTE_WINDOW_SCENE.instantiate() as NoteWindow
 	game_over_window = GAME_OVER_WINDOW_SCENE.instantiate() as GameOverWindow
+	card_window = CARD_WINDOW_SCENE.instantiate() as CardWindow
+	number_lock_window = NUMBER_LOCK_WINDOW_SCENE.instantiate() as NumberLockWindow
 	add_child(safe_window)
 	add_child(note_window)
 	add_child(game_over_window)
+	add_child(card_window)
+	add_child(number_lock_window)
 	safe_window.closed.connect(close)
 	note_window.closed.connect(close)
+	card_window.closed.connect(close)
+	number_lock_window.closed.connect(close)
 	GameManager.game_over.connect(_on_game_over)
 	hide_all()
 
@@ -42,6 +52,22 @@ func open_note() -> void:
 		return
 	_modal_open = true
 	note_window.open()
+	_show_modal()
+
+
+func open_card() -> void:
+	if _modal_open:
+		return
+	_modal_open = true
+	card_window.open()
+	_show_modal()
+
+
+func open_lock(lock: NumberLock) -> void:
+	if _modal_open:
+		return
+	_modal_open = true
+	number_lock_window.open(lock)
 	_show_modal()
 
 
@@ -65,6 +91,8 @@ func hide_all() -> void:
 	safe_window.visible = false
 	note_window.visible = false
 	game_over_window.visible = false
+	card_window.visible = false
+	number_lock_window.visible = false
 
 
 func _show_modal() -> void:

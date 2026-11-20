@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://dcnfph265dal3"]
+
+[ext_resource type="Script" uid="uid://djvqeev00rcv0" path="res://scripts/collectibles/pillow.gd" id="1_a1fhx"]
+[ext_resource type="PackedScene" uid="uid://bnwl6fylfjusf" path="res://assets/test/SM_Almohada.glb" id="3_h0ouw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c34w2"]
+size = Vector3(0.5, 0.14, 0.38)
+
+[node name="Pillow" type="StaticBody3D" unique_id=192728528]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_a1fhx")
+
+[node name="Model" parent="." unique_id=702696558 instance=ExtResource("3_h0ouw")]
+transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1398314576]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07, 0)
+shape = SubResource("BoxShape3D_c34w2")

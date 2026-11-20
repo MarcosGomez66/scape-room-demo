@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://d4dad76vspflb"]
+
+[ext_resource type="Script" uid="uid://nklmhcwe5811" path="res://scripts/collectibles/card.gd" id="1_hcy6m"]
+[ext_resource type="Texture2D" uid="uid://ck3ltyqowv0fw" path="res://assets/test/img/tarjeta_de_invitacion.png" id="2_kdfhq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1r1qa"]
+size = Vector3(0.22, 0.02, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oj8e1"]
+shading_mode = 0
+albedo_texture = ExtResource("2_kdfhq")
+
+[sub_resource type="QuadMesh" id="QuadMesh_8lwvc"]
+size = Vector2(0.22, 0.16)
+
+[node name="Card" type="StaticBody3D" unique_id=868283057]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_hcy6m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1912704107]
+shape = SubResource("BoxShape3D_1r1qa")
+
+[node name="Plate" type="MeshInstance3D" parent="." unique_id=1673318431]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_oj8e1")
+mesh = SubResource("QuadMesh_8lwvc")

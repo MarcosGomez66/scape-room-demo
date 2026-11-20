@@ -1,8 +1,12 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://drx2vn45cdj6i"]
 
+[ext_resource type="PackedScene" uid="uid://c0rufqhhor6b4" path="res://scenes/collectibles/Key.tscn" id="1_028hj"]
 [ext_resource type="Script" uid="uid://ropgki0s5uv7" path="res://scripts/inventory/item_data.gd" id="1_uq4ki"]
+[ext_resource type="PackedScene" uid="uid://i4ysy6r35byw" path="res://assets/test/SM_Llave.glb" id="2_snag1"]
 
 [resource]
 script = ExtResource("1_uq4ki")
 id = &"key_bedroom"
 display_name = "Llave del dormitorio"
+held_scene = ExtResource("2_snag1")
+dropped_scene = ExtResource("1_028hj")

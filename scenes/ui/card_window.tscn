@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://dyuvu360bekoe"]
+
+[ext_resource type="Script" uid="uid://c6j0mmjrnd5bf" path="res://scripts/ui/card_window.gd" id="1_dbb1c"]
+[ext_resource type="Texture2D" uid="uid://ck3ltyqowv0fw" path="res://assets/test/img/tarjeta_de_invitacion.png" id="2_niruy"]
+
+[node name="card_window" type="Control" unique_id=1331732258]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_dbb1c")
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=167646498]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.62)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=777388141]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="PanelContainer" parent="Center" unique_id=69708092]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(540, 380)
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Center/Panel" unique_id=1360505706]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Header" type="HBoxContainer" parent="Center/Panel/Content" unique_id=2045337083]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Center/Panel/Content/Header" unique_id=1976755611]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.96, 0.93, 0.85, 1)
+theme_override_font_sizes/font_size = 26
+text = "Tarjeta de invitación"
+
+[node name="CloseButton" type="Button" parent="Center/Panel/Content/Header" unique_id=1842899890]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 36)
+layout_mode = 2
+text = "Cerrar"
+
+[node name="CardImage" type="TextureRect" parent="Center/Panel/Content" unique_id=1842049352]
+custom_minimum_size = Vector2(470, 270)
+layout_mode = 2
+texture = ExtResource("2_niruy")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Hint" type="Label" parent="Center/Panel/Content" unique_id=1552517668]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.75, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "La contraseña está escrita en la tarjeta."
+horizontal_alignment = 1

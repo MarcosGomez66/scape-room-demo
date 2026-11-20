@@ -6,6 +6,7 @@ class_name Wardrobe
 ## puzzle is solved.
 
 const KEY_SCENE: PackedScene = preload("res://scenes/collectibles/Key.tscn")
+const KEY_ITEM: ItemData = preload("res://resources/items/key_bedroom.tres")
 
 @onready var key_spawn: Marker3D = $KeySpawn
 
@@ -26,4 +27,6 @@ func _spawn_key() -> void:
 	if _key_spawned:
 		return
 	_key_spawned = true
-	key_spawn.add_child(KEY_SCENE.instantiate())
+	var key: KeyPickup = KEY_SCENE.instantiate() as KeyPickup
+	key.set_item(KEY_ITEM)
+	key_spawn.add_child(key)

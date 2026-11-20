@@ -1,0 +1,175 @@
+[gd_scene format=3 uid="uid://b7737m8d7s05p"]
+
+[ext_resource type="Script" uid="uid://diuug7h0fdw5c" path="res://scripts/ui/number_lock_window.gd" id="1_dtwqd"]
+
+[node name="number_lock_window" type="Control" unique_id=1607293692]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_dtwqd")
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=818825627]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.72)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1605664588]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="PanelContainer" parent="Center" unique_id=1715500494]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 520)
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Center/Panel" unique_id=1988068310]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="HBoxContainer" parent="Center/Panel/Content" unique_id=1396977376]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Center/Panel/Content/Header" unique_id=1897715917]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.96, 0.93, 0.85, 1)
+theme_override_font_sizes/font_size = 26
+text = "Cerradura"
+
+[node name="CloseButton" type="Button" parent="Center/Panel/Content/Header" unique_id=312162548]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 36)
+layout_mode = 2
+text = "Cerrar"
+
+[node name="DigitsLabel" type="Label" parent="Center/Panel/Content" unique_id=1760822002]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.86, 0.45, 1)
+theme_override_font_sizes/font_size = 36
+text = "____"
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="Center/Panel/Content" unique_id=265421763]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.76, 0.42, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="RowTop" type="HBoxContainer" parent="Center/Panel/Content" unique_id=625124893]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ClearButton" type="Button" parent="Center/Panel/Content/RowTop" unique_id=422715182]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "X"
+
+[node name="Digit0" type="Button" parent="Center/Panel/Content/RowTop" unique_id=1085752039]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "0"
+
+[node name="SubmitButton" type="Button" parent="Center/Panel/Content/RowTop" unique_id=697153763]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "✓"
+
+[node name="Row1" type="HBoxContainer" parent="Center/Panel/Content" unique_id=616529825]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Digit1" type="Button" parent="Center/Panel/Content/Row1" unique_id=1034044769]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "1"
+
+[node name="Digit2" type="Button" parent="Center/Panel/Content/Row1" unique_id=235899403]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "2"
+
+[node name="Digit3" type="Button" parent="Center/Panel/Content/Row1" unique_id=1466139339]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "3"
+
+[node name="Row2" type="HBoxContainer" parent="Center/Panel/Content" unique_id=1218654937]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Digit4" type="Button" parent="Center/Panel/Content/Row2" unique_id=167798366]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "4"
+
+[node name="Digit5" type="Button" parent="Center/Panel/Content/Row2" unique_id=1903843684]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "5"
+
+[node name="Digit6" type="Button" parent="Center/Panel/Content/Row2" unique_id=116336111]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "6"
+
+[node name="Row3" type="HBoxContainer" parent="Center/Panel/Content" unique_id=691590465]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Digit7" type="Button" parent="Center/Panel/Content/Row3" unique_id=1976050884]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "7"
+
+[node name="Digit8" type="Button" parent="Center/Panel/Content/Row3" unique_id=959579866]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "8"
+
+[node name="Digit9" type="Button" parent="Center/Panel/Content/Row3" unique_id=1115229098]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "9"
