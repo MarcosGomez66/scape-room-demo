@@ -9,3 +9,9 @@
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Exportación de Windows
+/build/
+
+# Escena vieja del menú que el editor vuelve a generar (ver AGENTS.md)
+/scenes/ui/main_menu.tscn
