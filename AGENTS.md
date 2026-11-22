@@ -2,7 +2,8 @@
 
 Demo 3D de escape room en primera persona, **Godot 4.7** (GDScript, Forward+).
 `GDD.md` es la fuente de verdad del diseño (en español): 3 puzles con progresión por
-llaves a través de 5 habitaciones + exterior. Documentación y conversación en español;
+llaves a través de 5 habitaciones + exterior. `NOTES.md` es el checklist de tareas
+(el segundo puzle ya figura como `[Hecho]`). Documentación y conversación en español;
 identificadores y comentarios de código en inglés.
 
 ## MCP de Godot: cómo está conectado
@@ -49,15 +50,23 @@ correr, mouse para mirar, Escape libera/recaptura el mouse. Sin salto, agacharse
 dash ni vuelo.
 
 - Acciones de input definidas en `project.godot` (physical keycodes): `move_forward`,
-  `move_backward`, `move_left`, `move_right`, `run`, `toggle_mouse`, `interact` (E) y
-  `slot_1` / `slot_2` / `slot_3` (1, 2 y 3 de la fila superior).
+  `move_backward`, `move_left`, `move_right`, `run`, `toggle_mouse`, `interact` (E),
+  `drop_item` (F) y `slot_1` / `slot_2` / `slot_3` (1, 2 y 3 de la fila superior).
 - Capas de física (con nombre en `project.godot`): 1 = `world`, 2 = `player`,
-  4 = `interactable`. El jugador no se ve a sí mismo y el raycast de interacción usa
-  máscara 9 (world + interactable), así que lo ignora.
+  3 = `furniture`, 4 = `interactable`. El jugador no se ve a sí mismo: su
+  `collision_mask` es 13 (world + furniture + interactable), así que choca con los
+  muebles; el raycast de interacción usa máscara 9 (world + interactable) y por eso
+  ignora los muebles de la capa `furniture`.
 - HUD (`scripts/ui/hud.gd`, `class_name Hud`): mira (`assets/player/crosshair.png`; ver
   `THIRD_PARTY.md`), prompt de interacción debajo de la mira, panel de mensajes temporal,
   barra de 3 slots de inventario abajo al centro y contador de fallos (`StrikeLabel`,
   arriba a la derecha, formato `Fallos: X - -`).
+- Objeto en mano: `HandAnchor` (`Player/CameraHolder/Camera/HandAnchor`) recibe la
+  instancia de `ItemData.held_scene` del slot seleccionado. `_refresh_held_item()`
+  reacciona a `slots_changed` / `selection_changed` y `_try_drop_item()` (F) instancia
+  `dropped_scene`, la añade al árbol con `add_child()` **antes** de asignar
+  `global_position` (hacerlo antes dispara `Condition "!is_inside_tree()"`) y llama a
+  `Inventory.remove_selected()`.
 - `scenes/test/house_test_level.tscn` es el nivel jugable actual
   (`application/run/main_scene`); `scenes/test/test_level.tscn` es el nivel plano viejo.
 
@@ -66,27 +75,37 @@ dash ni vuelo.
 - **Base:** `scripts/interactables/interactable.gd` (`class_name Interactable extends
   StaticBody3D`). Expone `prompt_text`, `enabled`, `get_prompt()` e `interact() -> String`
   (el string es el mensaje para el HUD). Los interactuables que no deben bloquear el paso
-  usan solo la capa 4; los sólidos, 1 + 4 (valor 9).
+  usan solo la capa 4; los sólidos, 1 + 4 (valor 9). Los muebles que no son
+  interactuables pero deben detener al jugador (como el sofá) van solo en capa 3
+  (`furniture`, valor 4): el jugador choca con ellos y el rayo de interacción los ignora.
 - **Raycast:** `Player/CameraHolder/Camera/InteractionRay` (`RayCast3D`, 2.2 m, máscara 9,
   `scripts/player/interaction_ray.gd`) actualiza el prompt cada frame y con E llama a
   `interact()` del objetivo.
 - **Inventario:** autoload `Inventory` (`scripts/managers/inventory.gd`): 3 slots fijos,
   `selected_slot`, señales `slots_changed` / `selection_changed`. `add_item` autoselecciona
-  el slot nuevo; `remove_item` se usa para consumir la llave. Los objetos son
-  `ItemData` (`scripts/inventory/item_data.gd`); la llave del dormitorio vive en
-  `resources/items/key_bedroom.tres`.
+  el slot nuevo; `remove_item` se usa para consumir la llave y `remove_selected()` para
+  soltar el objeto con F. Los objetos son `ItemData` (`scripts/inventory/item_data.gd`),
+  con `held_scene` (vista en mano) y `dropped_scene` (instancia al soltar). La llave del
+  dormitorio vive en `resources/items/key_bedroom.tres` y la almohada en
+  `resources/items/pillow.tres`.
 - **Puerta:** `scenes/interactables/Door.tscn` + `scripts/interactables/door.gd`
   (`class_name Door`). Usa `SM_Puerta.glb`: el marco queda fijo y `_ready` reparenta
   `SM_Hoja` + `SM_Pomo` bajo `Hinge`. **El `CollisionShape3D` de la hoja es hijo directo
   del `StaticBody3D`** (Godot no registra shapes colgadas de un `Node3D` intermedio) y el
   tween lo rota junto con la bisagra. Exportados: `required_item_id`, `locked`,
-  `open_angle_degrees`, `open_time`, `is_open`.
+  `open_angle_degrees`, `open_time`, `is_open`. `unlock()` la desbloquea sin consumir
+  ningún objeto: lo usa la cerradura numérica al ingresar la contraseña correcta.
 - **Llave:** `scenes/collectibles/Key.tscn` + `scripts/collectibles/key.gd`
-  (`class_name KeyPickup`), capa 4 con luz de acento para que se vea en la casa nocturna.
+  (`class_name KeyPickup`), capa 4 con luz de acento (`Glow`) para que se vea en la casa
+  nocturna. `set_item(value)` inyecta el `ItemData`: **no se serializa `item` en el
+  `.tscn`**, porque `key_bedroom.tres` referencia a `Key.tscn` y eso crea un ciclo de
+  recursos. `wardrobe.gd` usa `KEY_SCENE` + `KEY_ITEM` al spawnearla. Al recogerla se
+  libera `Glow` antes que el cuerpo, si no aparece un error de `Transform3D()` con el
+  nodo fuera del árbol.
 
 ## Puzle del dormitorio: estado de partida y UI modal
 
-Tres autoloads (registrados en `project.godot`) sostienen el puzle:
+Tres autoloads (registrados en `project.godot`) sostienen los puzles:
 
 - **`PuzzleManager`** (`scripts/managers/puzzle_manager.gd`): paleta de 5 colores
   (`COLORS`: id, nombre, pista y textura) y datos generados. `picture_colors` son los 3
@@ -101,11 +120,11 @@ Tres autoloads (registrados en `project.godot`) sostienen el puzle:
   `restart_game()`, que resetea fallos, llama `Inventory.clear()` y
   `PuzzleManager.generate()`, cierra la UI, despausa y recarga la escena actual.
 - **`PuzzleUI`** (`scripts/ui/puzzle_ui.gd`): `CanvasLayer` con `layer = 100` y
-  `PROCESS_MODE_ALWAYS`; instancia `scenes/ui/safe_window.tscn`,
-  `scenes/ui/note_window.tscn` y `scenes/ui/game_over_window.tscn`. Cualquier
-  interactuable llama `PuzzleUI.open_safe()` / `open_note()`; mientras hay un modal
-  abierto pausa el árbol y muestra el mouse. Escape (`toggle_mouse`) y el botón Cerrar
-  vuelven al juego.
+  `PROCESS_MODE_ALWAYS`; instancia cinco ventanas: `scenes/ui/safe_window.tscn`,
+  `note_window.tscn`, `game_over_window.tscn`, `card_window.tscn` y
+  `number_lock_window.tscn`. Los interactuables llaman `PuzzleUI.open_safe()` /
+  `open_note()` / `open_card()` / `open_lock(lock)`; mientras hay un modal abierto pausa
+  el árbol y muestra el mouse. Escape (`toggle_mouse`) y el botón Cerrar vuelven al juego.
 
 Ventanas:
 
@@ -163,6 +182,59 @@ combinación nueva.
 El nivel coloca `Wardrobe` en `(-3.05, 0.30, -3.86)`, `Desk` en
 `(-1.65, 0.30, -3.86)` y los cuadros `PictureFrameLeft/Center/Right` en
 `x = -3.0 / -2.25 / -1.5`, `y = 1.55`, `z = -1.17`, rotados 180° en Y, con slots 0/1/2.
+
+## Puzle del salón: tarjeta y cerradura numérica
+
+- **Sofá** (`scenes/environment/furniture/Sofa.tscn` + `scripts/environment/sofa.gd`,
+  `class_name Sofa`): `StaticBody3D` en capa `furniture` (4) con colisiones de base,
+  brazos y respaldo. Los `SM_AlmohadonBase*` del GLB **se dejan visibles**; encima de
+  cada uno se coloca una almohada recogible en `PillowSpot0/1/2`.
+- **Almohadas** (`scenes/collectibles/Pillow.tscn` + `scripts/collectibles/pillow.gd`,
+  `class_name Pillow`): capa 4, se recogen con E y se sueltan con F. `sofa.gd` inyecta
+  el recurso `PILLOW_ITEM` (`resources/items/pillow.tres`) con `set_item()` para no
+  repetir el ciclo de recursos de la llave. Al recogerse salen del grupo `sofa_pillow`
+  y llaman a `refresh_cover()`; `player.gd` también lo llama después de un drop.
+- **Tarjeta** (`scenes/collectibles/Card.tscn` + `scripts/collectibles/card.gd`,
+  `class_name Card`): capa 4 cuando está descubierta, solo lectura →
+  `PuzzleUI.open_card()` → `CardWindow` con `assets/test/img/tarjeta_de_invitacion.png`.
+  `sofa.gd` la elige en un `card_slot` aleatorio y la pone en
+  `spot.global_position + (0, -0.07, 0)`, es decir entre el almohadón baked y la
+  almohada de arriba. `refresh_cover()` usa el grupo `sofa_pillow` y `COVER_RADIUS =
+  0.24`: si hay una almohada encima, `set_covered(true)` la vuelve invisible, la
+  deshabilita y le pone capa 0.
+- **Cerradura** (`scenes/interactables/NumberLock.tscn` +
+  `scripts/interactables/number_lock.gd`, `class_name NumberLock`): `password = 2805`
+  fijo, `digit_count = 4`, `linked_door` y señal `solved`. `submit(code)` valida la
+  longitud, llama a `GameManager.add_strike()` si falla y, si acierta, emite `solved`,
+  se deshabilita (capa 0) y llama `Door.unlock()`.
+- **Ventana** (`scripts/ui/number_lock_window.gd`, `class_name NumberLockWindow`):
+  teclado modal con X (limpiar), 0 y ✓ (comprobar) más 1–9; muestra los dígitos con
+  guiones bajos y usa un temporizador de 1 s para el feedback antes de limpiar o cerrar.
+- **Colocación en `house_test_level.tscn`:** `Sofa` en `(-2.1, 0.3, 0.5)`,
+  `KitchenDoor` en `(0.615, 0.3, -1.19)` y `NumberLock` en `(0.5, 1.25, -0.55)` con
+  `linked_door = NodePath("../KitchenDoor")`.
+- **Flujo:** levantar almohadas hasta encontrar la tarjeta → leer la contraseña →
+  interactuar con la cerradura e ingresar `2805` → la puerta a la cocina se desbloquea
+  y se abre. Los códigos incorrectos suman strikes **globales** (los mismos que la
+  caja fuerte); con 3 se dispara el game over y el reinicio genera una combinación nueva.
+
+### Gotchas de prueba y validación
+
+- `game_start` usa la escena abierta en el editor: abrir siempre
+  `res://scenes/test/house_test_level.tscn` antes de iniciar la partida de prueba.
+- `debugger_get_log` se reinicia con `game_stop` / `game_start`; conviene filtrar
+  `text_filter: "ERROR"`. Los mensajes de `editor_get_console` sobre "progress dialog
+  while flushing" o `!tasks.has(p_task)` son ruido del editor generado por
+  `extensions_refresh` / LSP, no errores del juego.
+- `execute_code` es **expression-only** (sin `var`, `if`, `for`) y no resuelve globals
+  (`Vector3`, autoloads): usar rutas absolutas `/root/...` y, para posiciones,
+  `runtime_set_property` con `{"type": "Vector3", "x": ..., "y": ..., "z": ...}`.
+- `input_simulate` con `events: {event_type: "action", event_data: {action:
+  "drop_item"}}` permite probar la tecla F.
+- El editor puede revertir `scripts/player/player.gd` si se edita por MCP y luego se
+  reasigna el script: verificar el archivo en disco y llamar `extensions_refresh()`.
+- `lsp_project_diagnostics` da 26 archivos escaneados, 25 limpios; el único aviso es
+  el preexistente `SHADOWED_VARIABLE_BASE_CLASS` en `scripts/interactables/door.gd:84`.
 
 ## Assets de terceros
 
