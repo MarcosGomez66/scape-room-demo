@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bl1nx2agv2m32"]
+
+[ext_resource type="Script" uid="uid://c0cggdmcwdf2b" path="res://scripts/environment/stove.gd" id="1_6t1pp"]
+[ext_resource type="PackedScene" uid="uid://du4x0b5ti4jqo" path="res://assets/test/SM_Cocina.glb" id="2_hh7xt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3s4d1"]
+size = Vector3(0.95, 1, 0.8)
+
+[node name="Stove" type="StaticBody3D" unique_id=1233498139]
+collision_layer = 9
+collision_mask = 0
+script = ExtResource("1_6t1pp")
+
+[node name="Model" parent="." unique_id=107154103 instance=ExtResource("2_hh7xt")]
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1855394702]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_3s4d1")
+
+[node name="BurnerSpot" type="Marker3D" parent="." unique_id=237671034]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, 0.94, 0.175)
+
+[node name="CookTimer" type="Timer" parent="." unique_id=398762426]
+process_mode = 3
+wait_time = 5.0
+one_shot = true

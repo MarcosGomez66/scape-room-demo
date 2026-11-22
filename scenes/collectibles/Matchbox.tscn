@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://sr3mwcme6tst"]
+
+[ext_resource type="Script" uid="uid://coqecwxb8ime6" path="res://scripts/collectibles/matchbox.gd" id="1_i0cig"]
+[ext_resource type="PackedScene" uid="uid://bdyc0xmap2k5" path="res://assets/test/SM_Fosforo.glb" id="2_jhk0n"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nxpo8"]
+size = Vector3(0.3, 0.22, 0.2)
+
+[node name="Matchbox" type="StaticBody3D" unique_id=1588440313]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_i0cig")
+
+[node name="Model" parent="." unique_id=1282413751 instance=ExtResource("2_jhk0n")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1782984765]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+shape = SubResource("BoxShape3D_nxpo8")
+
+[node name="Glow" type="OmniLight3D" parent="." unique_id=1591284675]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+light_color = Color(1, 0.72, 0.32, 1)
+light_energy = 0.5
+omni_range = 1.0

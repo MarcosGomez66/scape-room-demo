@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://swt3wl0gsl61"]
+
+[ext_resource type="PackedScene" uid="uid://bpsxngtlow0o1" path="res://assets/test/Lata.glb" id="1_frj4s"]
+[ext_resource type="PackedScene" uid="uid://bws0jrwvtl2c8" path="res://scenes/collectibles/Can.tscn" id="1_xtnq8"]
+[ext_resource type="Script" uid="uid://ropgki0s5uv7" path="res://scripts/inventory/item_data.gd" id="2_xtnq8"]
+
+[resource]
+script = ExtResource("2_xtnq8")
+id = "can"
+display_name = "Lata de alimento"
+held_scene = ExtResource("1_frj4s")
+dropped_scene = ExtResource("1_xtnq8")

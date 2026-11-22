@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://dn38v3wf6erji"]
+
+[ext_resource type="PackedScene" uid="uid://8broy5rto2jo" path="res://assets/test/SM_heladera.glb" id="1_s66jp"]
+[ext_resource type="Script" uid="uid://cnllgycrql532" path="res://scripts/interactables/fridge_door.gd" id="2_pk7uj"]
+[ext_resource type="Script" uid="uid://bllqrdikwfq0m" path="res://scripts/environment/item_spawner.gd" id="3_shtkf"]
+[ext_resource type="PackedScene" uid="uid://c2j3bstu66xw1" path="res://scenes/interactables/FridgeNote.tscn" id="4_ly7s0"]
+[ext_resource type="PackedScene" uid="uid://bws0jrwvtl2c8" path="res://scenes/collectibles/Can.tscn" id="5_8fq2g"]
+[ext_resource type="Resource" uid="uid://swt3wl0gsl61" path="res://resources/items/can.tres" id="6_vjd4r"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dpo0l"]
+size = Vector3(0.72, 1.9, 0.72)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5iyuu"]
+size = Vector3(0.58, 1.5, 0.06)
+
+[node name="Fridge" type="StaticBody3D" unique_id=1617245471]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=418717197 instance=ExtResource("1_s66jp")]
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=965539686]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+shape = SubResource("BoxShape3D_dpo0l")
+
+[node name="FridgeDoor" type="StaticBody3D" parent="." unique_id=1947368496]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.29, 0, 0.315)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("2_pk7uj")
+
+[node name="Collision" type="CollisionShape3D" parent="FridgeDoor" unique_id=935799158]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29, 0.92, 0)
+shape = SubResource("BoxShape3D_5iyuu")
+
+[node name="NoteSpawner" type="Node3D" parent="." unique_id=1909522859]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08, 0.06)
+script = ExtResource("3_shtkf")
+spawn_scene = ExtResource("4_ly7s0")
+
+[node name="CanSpawner" type="Node3D" parent="." unique_id=157300289]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0.06)
+script = ExtResource("3_shtkf")
+spawn_scene = ExtResource("5_8fq2g")
+item = ExtResource("6_vjd4r")

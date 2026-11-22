@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bws0jrwvtl2c8"]
+
+[ext_resource type="Script" uid="uid://dpxemj7x022m0" path="res://scripts/collectibles/can.gd" id="1_22brt"]
+[ext_resource type="PackedScene" uid="uid://bpsxngtlow0o1" path="res://assets/test/Lata.glb" id="2_vafg2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lmtbo"]
+size = Vector3(0.34, 0.3, 0.34)
+
+[node name="Can" type="StaticBody3D" unique_id=1162224989]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_22brt")
+
+[node name="Model" parent="." unique_id=781915762 instance=ExtResource("2_vafg2")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1493006029]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+shape = SubResource("BoxShape3D_lmtbo")
+
+[node name="Glow" type="OmniLight3D" parent="." unique_id=2127373092]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+light_color = Color(1, 0.82, 0.45, 1)
+light_energy = 0.6
+omni_range = 1.2
+
+[node name="KeySpawn" type="Marker3D" parent="." unique_id=129906662]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38, 0)

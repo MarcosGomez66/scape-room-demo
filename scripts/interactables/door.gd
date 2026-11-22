@@ -11,11 +11,12 @@ class_name Door
 const HINGE_X: float = 0.45
 const LEAF_CENTER: Vector3 = Vector3(0.0, 1.05, 0.0)
 
-@export var required_item_id: StringName = &"key_bedroom"
+@export var required_item_id: String = "key_bedroom"
 @export var locked: bool = true
 @export var open_angle_degrees: float = -90.0
 @export var open_time: float = 0.9
 @export var is_open: bool = false
+@export var leaf_material: Material = null
 
 @onready var hinge: Node3D = $Hinge
 @onready var model: Node3D = $Model
@@ -27,6 +28,10 @@ var _tween: Tween
 
 func _ready() -> void:
 	hinge.position.x = HINGE_X
+	if leaf_material != null:
+		var leaf: MeshInstance3D = model.get_node_or_null("SM_Hoja") as MeshInstance3D
+		if leaf != null:
+			leaf.material_override = leaf_material
 	_move_leaf_to_hinge("SM_Hoja")
 	_move_leaf_to_hinge("SM_Pomo")
 	_apply_angle(0.0)
@@ -38,14 +43,13 @@ func get_prompt() -> String:
 
 func interact() -> String:
 	if locked:
-		var selected: ItemData = Inventory.get_selected_item()
-		if selected != null and selected.id == required_item_id:
+		# The key works from any slot: the player does not have to select it.
+		var key_id: StringName = StringName(required_item_id)
+		if not required_item_id.is_empty() and Inventory.has_item(key_id):
 			locked = false
-			Inventory.remove_item(required_item_id)
+			Inventory.remove_item(key_id)
 			_set_open(true)
 			return "Usaste la llave. Puerta desbloqueada."
-		if Inventory.has_item(required_item_id):
-			return "Tenés la llave. Seleccionala con 1, 2 o 3."
 		return "La puerta está bloqueada. Necesitás una llave."
 	_set_open(not is_open)
 	return ""

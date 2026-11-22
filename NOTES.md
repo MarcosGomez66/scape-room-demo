@@ -1,4 +1,5 @@
 # cosas que hacer
+## puzle 1
 
 - [Hecho] crear la escena del ropero:
 	- se debe poder interactuar con la puerta izquierda para abrir
@@ -57,6 +58,8 @@ Una centinela de hierro en la acera que guarda voces perdidas.
 ## Cactus_verde
 una fortaleza viviente de espinas y pliegues que desafía la sequedad.
 
+## puzle 2
+
 - [Hecho] crear la escena del sofa:
 	- con static body lo suficientemente detallado para instanciar encima la tarjeta y las almohadas
 	
@@ -96,3 +99,36 @@ una fortaleza viviente de espinas y pliegues que desafía la sequedad.
 	- la puerta se abre hacia la cocina
 	- colocar la cerradura numerica al lado de la puerta
 	- comprobar que la contraseña sea la correcta para desbloquear la puerta
+
+## puzle 3
+
+- [Hecho] crear la escena de la heladera:
+	- se debe poder interactuar con la puerta para abrir, dejar abierto
+	- en su interior se debe poder instanciar una nota en la primera parrilla y la lata en la segunda
+
+- [Hecho] crear la lata de alimento, la nota, el fosforo, la llave del baño y la llave principal:
+	- la lata se debe poder recoger
+	- el fosforo se debe poder recoger
+	- la nota solo muestra la ventana con el texto "No poner la lata de alimento directamente en el fuego"
+
+- [Hecho] crear la escena de la cocina:
+	- se debe poder interactuar con la cocina, originalmente apagada
+	- interactuar con la lata seleccionada ubica la lata encima de la hornalla 002
+	- interactuar con la caja de fosforos enciende la cocina
+	- intaructuar con otra cosa o sin nada muestra un mensaje explicativo "La cocina tiene gas pero necesito algo para encenderlo"
+
+- [Hecho] crear la escena de la mesita:
+	- con dos simples usos, sostener la llave del baño en la cocina y sostener los fosforos en el baño
+
+- [Hecho] crear el sistema del tercer puzle:
+	- colocar y vincular la puerta del baño y la puerta principal con sus respectivas llaves (si se puede reemplazar el color del materiar de la hoja de la puerta principal por uno blanco para que se diferencie de las otras puertas)
+	- colocar la heladera, la cocina a gas y la mesita (con la llave del baño arriba) en la cocina
+	- colocar la mesita (con la caja de fosforos) en el fondo del baño
+	- ubicar la lata y encender la cocina deben poder funcionar por separado sin orden
+	- cuando la lata este en posicion con la cocina encendida inciar un cronometro de 5 segundos
+	- durante transcurre el cronometro aplicar una animacion de vibracion a la lata, tambien bloquear la interaccion con la cocina
+	- al finalizar el cronometro simular que la tapa de la lata sale disparada hacia arriba
+	- al final se debe poder recoger la llave principal instanciada dentro de la lata dentro de la lata
+
+- [Hecho] crear el sistema de fin del juego:
+	- que muestre un mensaje de felicitaciones y un boton de reinicio

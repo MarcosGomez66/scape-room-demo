@@ -8,6 +8,15 @@
 [ext_resource type="PackedScene" uid="uid://6loo1eutllye" path="res://scenes/environment/props/PictureFrame.tscn" id="6_fr5gi"]
 [ext_resource type="PackedScene" uid="uid://c8kicv4dofm8x" path="res://scenes/environment/furniture/Sofa.tscn" id="7_fr5gi"]
 [ext_resource type="PackedScene" uid="uid://bvbaxvcssk1s2" path="res://scenes/interactables/NumberLock.tscn" id="8_6oa4q"]
+[ext_resource type="PackedScene" uid="uid://dn38v3wf6erji" path="res://scenes/environment/furniture/Fridge.tscn" id="9_40i4e"]
+[ext_resource type="PackedScene" uid="uid://bl1nx2agv2m32" path="res://scenes/environment/furniture/Stove.tscn" id="10_b60hs"]
+[ext_resource type="PackedScene" uid="uid://bbi5sfws550kw" path="res://scenes/environment/furniture/SideTable.tscn" id="11_cbk0f"]
+[ext_resource type="Script" uid="uid://bllqrdikwfq0m" path="res://scripts/environment/item_spawner.gd" id="12_7pa2s"]
+[ext_resource type="PackedScene" uid="uid://c0rufqhhor6b4" path="res://scenes/collectibles/Key.tscn" id="13_3ieiy"]
+[ext_resource type="Resource" uid="uid://cd2atubiptemp" path="res://resources/items/key_bathroom.tres" id="14_aqrt6"]
+[ext_resource type="PackedScene" uid="uid://sr3mwcme6tst" path="res://scenes/collectibles/Matchbox.tscn" id="15_wdd3w"]
+[ext_resource type="Resource" uid="uid://d0f74kty8kkms" path="res://resources/items/match.tres" id="16_l7g1i"]
+[ext_resource type="Script" uid="uid://downtflapxw1t" path="res://scripts/interactables/exit_trigger.gd" id="17_e4ipd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4cny8"]
 size = Vector3(60, 0.5, 60)
@@ -18,9 +27,16 @@ albedo_color = Color(0.16, 0.2, 0.14, 1)
 [sub_resource type="PlaneMesh" id="PlaneMesh_ylyn5"]
 size = Vector2(60, 60)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u6vg6"]
+albedo_color = Color(0.93, 0.94, 0.96, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hlq32"]
+size = Vector3(2.2, 2.6, 1.4)
+
 [node name="HouseTestLevel" type="Node3D" unique_id=68745559]
 
 [node name="House" parent="." unique_id=1069368756 instance=ExtResource("1_f38u6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0077827573, -0.0076836348, -0.00034618378)
 
 [node name="ExteriorGround" type="StaticBody3D" parent="." unique_id=76679584]
 
@@ -57,7 +73,7 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.5
 picture_slot = 2
 
 [node name="Sofa" parent="." unique_id=869360623 instance=ExtResource("7_fr5gi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 0.3, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 0.3, -0.49385637)
 
 [node name="KitchenDoor" parent="." unique_id=755278664 instance=ExtResource("3_4cny8")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.57, 0.3, -1.19)
@@ -67,3 +83,46 @@ open_angle_degrees = 90.0
 [node name="NumberLock" parent="." unique_id=155750586 instance=ExtResource("8_6oa4q")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.5, 1.25, -0.55)
 linked_door = NodePath("../KitchenDoor")
+
+[node name="BathDoor" parent="." unique_id=789401257 instance=ExtResource("3_4cny8")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.57, 0.3, -3.34)
+required_item_id = "key_bathroom"
+open_angle_degrees = 90.0
+
+[node name="MainDoor" parent="." unique_id=2020403535 instance=ExtResource("3_4cny8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, 0.3, 2.025)
+required_item_id = "key_main"
+leaf_material = SubResource("StandardMaterial3D_u6vg6")
+
+[node name="Fridge" parent="." unique_id=1617245471 instance=ExtResource("9_40i4e")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3.15, 0.3, -0.20584267)
+
+[node name="Stove" parent="." unique_id=1233498139 instance=ExtResource("10_b60hs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1, 0.3, -1.5)
+
+[node name="KitchenTable" parent="." unique_id=1394585274 instance=ExtResource("11_cbk0f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0887815, 0.3, 1.582781)
+
+[node name="KeySpawner" type="Node3D" parent="KitchenTable" unique_id=971561444]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+script = ExtResource("12_7pa2s")
+spawn_scene = ExtResource("13_3ieiy")
+item = ExtResource("14_aqrt6")
+
+[node name="BathTable" parent="." unique_id=638744431 instance=ExtResource("11_cbk0f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9399192, 0.3, -3.2509384)
+
+[node name="MatchSpawner" type="Node3D" parent="BathTable" unique_id=1994515757]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+script = ExtResource("12_7pa2s")
+spawn_scene = ExtResource("15_wdd3w")
+item = ExtResource("16_l7g1i")
+
+[node name="ExitTrigger" type="Area3D" parent="." unique_id=1020802867]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.13, 1.2, 2.75)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("17_e4ipd")
+
+[node name="Collision" type="CollisionShape3D" parent="ExitTrigger" unique_id=369221063]
+shape = SubResource("BoxShape3D_hlq32")

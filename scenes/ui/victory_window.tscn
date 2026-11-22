@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://dugh65e1ci2o3"]
+
+[ext_resource type="Script" uid="uid://bbdj3xnad1i1a" path="res://scripts/ui/victory_window.gd" id="1_8x2b5"]
+
+[node name="VictoryWindow" type="Control" unique_id=1579817331]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_8x2b5")
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=2113416375]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.85)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1137866253]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="PanelContainer" parent="Center" unique_id=1502454069]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(520, 300)
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Center/Panel" unique_id=1165623777]
+layout_mode = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="Title" type="Label" parent="Center/Panel/Content" unique_id=87434610]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.9, 0.52, 1)
+theme_override_font_sizes/font_size = 34
+text = "¡Escapaste!"
+horizontal_alignment = 1
+
+[node name="Message" type="Label" parent="Center/Panel/Content" unique_id=771241502]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.87, 0.88, 1)
+theme_override_font_sizes/font_size = 19
+text = "Completaste la demo. Saliste de la casa cerrada."
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="Center/Panel/Content" unique_id=2097244693]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 48)
+layout_mode = 2
+text = "Reiniciar"

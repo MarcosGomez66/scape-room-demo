@@ -3,7 +3,7 @@
 Demo 3D de escape room en primera persona, **Godot 4.7** (GDScript, Forward+).
 `GDD.md` es la fuente de verdad del diseño (en español): 3 puzles con progresión por
 llaves a través de 5 habitaciones + exterior. `NOTES.md` es el checklist de tareas
-(el segundo puzle ya figura como `[Hecho]`). Documentación y conversación en español;
+(los tres puzles ya figuran como `[Hecho]`). Documentación y conversación en español;
 identificadores y comentarios de código en inglés.
 
 ## MCP de Godot: cómo está conectado
@@ -116,15 +116,19 @@ Tres autoloads (registrados en `project.godot`) sostienen los puzles:
   `assets/test/img/` (`orquidea_magenta`, `taxi_amarillo`, `globo_azul`,
   `telefono_rojo`, `cactus_verde`), todas de 1200×896.
 - **`GameManager`** (`scripts/managers/game_manager.gd`): `MAX_STRIKES = 3`, `strikes`,
-  `is_game_over`, señales `strikes_changed(strikes)` / `game_over`. `add_strike()` y
-  `restart_game()`, que resetea fallos, llama `Inventory.clear()` y
-  `PuzzleManager.generate()`, cierra la UI, despausa y recarga la escena actual.
+  `is_game_over`, `has_won`, señales `strikes_changed(strikes)` / `game_over` /
+  `victory`. `add_strike()`, `win_game()` (pausa, muestra el mouse y emite `victory`
+  al salir de la casa) y `restart_game()`, que resetea fallos y victoria, llama
+  `Inventory.clear()` y `PuzzleManager.generate()`, cierra la UI, despausa y recarga
+  la escena actual.
 - **`PuzzleUI`** (`scripts/ui/puzzle_ui.gd`): `CanvasLayer` con `layer = 100` y
-  `PROCESS_MODE_ALWAYS`; instancia cinco ventanas: `scenes/ui/safe_window.tscn`,
-  `note_window.tscn`, `game_over_window.tscn`, `card_window.tscn` y
-  `number_lock_window.tscn`. Los interactuables llaman `PuzzleUI.open_safe()` /
-  `open_note()` / `open_card()` / `open_lock(lock)`; mientras hay un modal abierto pausa
-  el árbol y muestra el mouse. Escape (`toggle_mouse`) y el botón Cerrar vuelven al juego.
+  `PROCESS_MODE_ALWAYS`; instancia seis ventanas: `scenes/ui/safe_window.tscn`,
+  `note_window.tscn`, `game_over_window.tscn`, `card_window.tscn`,
+  `number_lock_window.tscn` y `victory_window.tscn`. Los interactuables llaman
+  `PuzzleUI.open_safe()` / `open_note()` / `open_message(título, texto)` /
+  `open_card()` / `open_lock(lock)`; mientras hay un modal abierto pausa el árbol y
+  muestra el mouse. Escape (`toggle_mouse`) y el botón Cerrar vuelven al juego
+  (salvo en game over y victoria, que solo ofrecen Reiniciar).
 
 Ventanas:
 
@@ -138,6 +142,8 @@ Ventanas:
   color.
 - **Game over** (`scripts/ui/game_over_window.gd`): overlay a pantalla completa con
   botón Reiniciar (`GameManager.restart_game()`), que genera una combinación nueva.
+- **Victoria** (`scripts/ui/victory_window.gd`): overlay de felicitaciones con el
+  mismo botón Reiniciar. Lo muestra `PuzzleUI` al recibir `GameManager.victory`.
 
 ### Muebles e interactuables del puzle
 
@@ -218,6 +224,61 @@ El nivel coloca `Wardrobe` en `(-3.05, 0.30, -3.86)`, `Desk` en
   y se abre. Los códigos incorrectos suman strikes **globales** (los mismos que la
   caja fuerte); con 3 se dispara el game over y el reinicio genera una combinación nueva.
 
+## Puzle de la cocina: lata, fósforos y salida
+
+- **Heladera** (`scenes/environment/furniture/Fridge.tscn` +
+  `scripts/interactables/fridge_door.gd`, `class_name FridgeDoor`): el `StaticBody3D`
+  `FridgeDoor` tiene su origen en la bisagra `(0.29, 0, 0.315)` (un borde de la
+  hoja `SM_Puerta`) y en `_ready` reparenta `Model/SM_Puerta` con
+  `reparent(self, true)`. Gira **+90°** una sola vez — con −90° la hoja entra
+  dentro del gabinete —, se deshabilita y queda abierta. `NoteSpawner` y
+  `CanSpawner` son `ItemSpawner`
+  genéricos (`scripts/environment/item_spawner.gd`): instancian la escena y luego
+  inyectan el `ItemData` con `set_item()`, sin serializarlo en el `.tscn`.
+- **Nota de la heladera** (`scenes/interactables/FridgeNote.tscn` +
+  `scripts/interactables/note_item.gd`): reutiliza `NoteWindow` mediante
+  `PuzzleUI.open_message(título, texto)`. `note_title` / `note_text` vienen por
+  export en la escena; el texto advierte "No poner la lata de alimento
+  directamente en el fuego".
+- **Cocina** (`scenes/environment/furniture/Stove.tscn` +
+  `scripts/environment/stove.gd`, `class_name Stove`): apagada por defecto; oculta
+  los `SM_Flama*`. Con la lata seleccionada la coloca en `BurnerSpot` (la consume
+  del inventario); con fósforos seleccionados enciende (también los consume) y
+  muestra las llamas. Cualquier otro objeto o slot vacío devuelve
+  `"La cocina tiene gas pero necesito algo para encenderlo"`. **Ambos pasos
+  funcionan en cualquier orden**; cuando están los dos arranca `CookTimer` (5 s,
+  `process_mode = ALWAYS`, ojo: el valor `4` es DISABLED en Godot 4), bloquea la
+  interacción y vibra `Model/SM_Cuerpo` desde `can.gd`.
+- **Lata** (`scenes/collectibles/Can.tscn` + `scripts/collectibles/can.gd`,
+  `class_name CanPickup`): capa 4, recogible con E y soltable con F. Al terminar
+  la cocción `burst()` anima `SM_Tapa` hacia arriba y **añade la llave principal
+  como hijo directo del `Can`** (no del `KeySpawn`, que es solo el `Marker3D`
+  de posición), con `set_item(key_main.tres)`.
+- **Mesitas** (`scenes/environment/furniture/SideTable.tscn`): capa `furniture`
+  (4). Sostienen la llave del baño en la cocina y los fósforos al fondo del baño.
+  `resources/items/key_bathroom.tres`, `key_main.tres`, `match.tres` y `can.tres`
+  referencian escenas; las escenas NUNCA referencian los `.tres`.
+- **Puertas y victoria:** `BathDoor` usa `key_bathroom` y `MainDoor` usa
+  `key_main`. `door.gd` exporta `required_item_id` como **`String`** (no
+  `StringName`: esos exports no se serializan con `node_set_property`) y detecta
+  la llave con `Inventory.find_item()`, así que abre desde cualquier slot sin
+  necesidad de seleccionarla. `leaf_material` aplica un `material_override`
+  blanco a `SM_Hoja` para diferenciar la salida. Fuera de la
+  casa, `ExitTrigger` (`scripts/interactables/exit_trigger.gd`, `Area3D`,
+  máscara 2) detecta al `PlayerController` y llama `GameManager.win_game()`;
+  eso emite `victory`, pausa el árbol y muestra `scenes/ui/victory_window.tscn`
+  desde `PuzzleUI`. El botón Reiniciar llama a `GameManager.restart_game()`,
+  que limpia inventario/strikes/victoria, regenera los puzles y recarga la escena.
+- **Flujo completo:** heladera → nota y lata → mesa de la cocina da la llave del
+  baño → baño da los fósforos → cocina (lata y fósforos en cualquier orden) →
+  5 s de vibración → tapa disparada → llave principal → `MainDoor` → caminar al
+  `ExitTrigger` → ventana de felicitaciones → Reiniciar.
+- **Colocación en `house_test_level.tscn`:** `BathDoor (0.57,0.3,-3.34)` rot Y 90,
+  `MainDoor (-1.13,0.3,2.075)`, `Fridge (3.15,0.3,-0.6)` rot Y −90,
+  `Stove (2.1,0.3,-1.5)`, `KitchenTable (1.45,0.3,0.9)`,
+  `BathTable (2.6,0.3,-3.5)` y `ExitTrigger (-1.13,1.2,2.75)` con
+  `BoxShape3D(2.2,2.6,1.4)`.
+
 ### Gotchas de prueba y validación
 
 - `game_start` usa la escena abierta en el editor: abrir siempre
@@ -233,8 +294,15 @@ El nivel coloca `Wardrobe` en `(-3.05, 0.30, -3.86)`, `Desk` en
   "drop_item"}}` permite probar la tecla F.
 - El editor puede revertir `scripts/player/player.gd` si se edita por MCP y luego se
   reasigna el script: verificar el archivo en disco y llamar `extensions_refresh()`.
-- `lsp_project_diagnostics` da 26 archivos escaneados, 25 limpios; el único aviso es
-  el preexistente `SHADOWED_VARIABLE_BASE_CLASS` en `scripts/interactables/door.gd:84`.
+- Los exports `StringName` **no persisten** con `node_set_property` (`leaf_material`,
+  que es `Material`, sí). Usar `String` y normalizar con `StringName(...)`. Tras
+  `editor_save_scene`, verificar siempre en disco (grep del `.tscn` o volver a
+  `scene_open`): `game_start` usa la escena en memoria y da falsos positivos.
+- En `scene_spatial_map`, `bounds.position` es la esquina mínima del AABB, no el
+  centro: usar `position + size / 2` para razonar sobre bisagras y colisiones.
+- `lsp_project_diagnostics` da 33 archivos escaneados, 33 limpios y sin avisos. Si
+  aparece `SHADOWED_VARIABLE_BASE_CLASS` en `door.gd`, revisar variables locales que
+  sombrean propiedades de `Node3D`.
 
 ## Assets de terceros
 

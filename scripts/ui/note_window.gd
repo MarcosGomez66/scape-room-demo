@@ -10,6 +10,7 @@ signal closed
 @onready var panel: PanelContainer = %Paper
 @onready var close_button: Button = %CloseButton
 @onready var clues: Array[Label] = [%Clue1, %Clue2, %Clue3]
+@onready var title_label: Label = $Center/Paper/Content/Header/Title
 
 
 func _ready() -> void:
@@ -20,11 +21,20 @@ func _ready() -> void:
 
 
 func open() -> void:
+	title_label.text = "Nota"
 	for i: int in clues.size():
 		if i < PuzzleManager.sequence.size():
 			clues[i].text = "%d. %s" % [i + 1, PuzzleManager.clue_for(PuzzleManager.sequence[i])]
 		else:
 			clues[i].text = ""
+	visible = true
+
+
+## Reuses the paper window for arbitrary short notes, e.g. the fridge warning.
+func open_custom(title: String, lines: Array) -> void:
+	title_label.text = title
+	for i: int in clues.size():
+		clues[i].text = lines[i] if i < lines.size() else ""
 	visible = true
 
 

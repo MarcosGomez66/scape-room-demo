@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://c2j3bstu66xw1"]
+
+[ext_resource type="Script" uid="uid://b6p6weewso04x" path="res://scripts/interactables/note_item.gd" id="1_affvn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_euvhq"]
+albedo_color = Color(0.96, 0.95, 0.9, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_i8ent"]
+size = Vector3(0.26, 0.2, 0.012)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gbe30"]
+size = Vector3(0.26, 0.2, 0.05)
+
+[node name="FridgeNote" type="StaticBody3D" unique_id=499959000]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_affvn")
+note_title = "Advertencia"
+note_text = "No poner la lata de alimento directamente en el fuego"
+
+[node name="Paper" type="MeshInstance3D" parent="." unique_id=481890460]
+material_override = SubResource("StandardMaterial3D_euvhq")
+mesh = SubResource("BoxMesh_i8ent")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1662897196]
+shape = SubResource("BoxShape3D_gbe30")
