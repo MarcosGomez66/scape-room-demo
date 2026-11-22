@@ -1,12 +1,13 @@
 extends Node
 
-## Tracks failed safe combinations. Three strikes end the run.
+## Tracks run state: strikes, game over and victory.
 
 signal strikes_changed(strikes: int)
 signal game_over
 signal victory
 
 const MAX_STRIKES: int = 3
+const LEVEL_SCENE: String = "res://scenes/test/house_test_level.tscn"
 
 var strikes: int = 0
 var is_game_over: bool = false
@@ -33,8 +34,19 @@ func win_game() -> void:
 	victory.emit()
 
 
+## Starts a fresh run from the main menu.
+func start_new_game() -> void:
+	_reset_run()
+	get_tree().change_scene_to_file(LEVEL_SCENE)
+
+
 ## Resets run state, regenerates the puzzle and reloads the level.
 func restart_game() -> void:
+	_reset_run()
+	get_tree().reload_current_scene()
+
+
+func _reset_run() -> void:
 	strikes = 0
 	is_game_over = false
 	has_won = false
@@ -42,8 +54,7 @@ func restart_game() -> void:
 	Inventory.clear()
 	PuzzleManager.generate()
 	var ui: Node = get_node_or_null("/root/PuzzleUI")
-	if ui != null:
-		ui.close_all()
+	if ui != null and ui.has_method("close_all"):
+		ui.call("close_all")
 	get_tree().paused = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	get_tree().reload_current_scene()

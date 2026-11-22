@@ -3,7 +3,7 @@ extends CharacterBody3D
 class_name PlayerController
 
 ## Minimal first-person controller for the escape room demo.
-## WASD to move, hold Shift to run, mouse to look, Escape to release/recapture the mouse.
+## WASD to move, hold Shift to run, mouse to look, Escape to open the pause menu.
 ## Keys 1-3 select an inventory slot; F drops the selected item.
 
 const SLOT_ACTIONS: Array[StringName] = [&"slot_1", &"slot_2", &"slot_3"]
@@ -57,8 +57,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 
 	if event.is_action_pressed("toggle_mouse"):
-		var captured: bool = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE if captured else Input.MOUSE_MODE_CAPTURED)
+		PuzzleUI.open_pause()
+		get_viewport().set_input_as_handled()
+		return
 
 
 func _physics_process(delta: float) -> void:

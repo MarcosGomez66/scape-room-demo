@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://bs4k7q2n9mpcv"]
+
+[ext_resource type="Script" uid="uid://5tb6xcs3qbmf" path="res://scripts/ui/main_menu.gd" id="1_menu"]
+
+[node name="StartMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.06, 0.09, 1)
+
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuPanel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(430, 270)
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Center/MenuPanel"]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Title" type="Label" parent="Center/MenuPanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.85, 0.95, 1)
+theme_override_font_sizes/font_size = 38
+text = "Escape Room"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Center/MenuPanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.78, 0.8, 1)
+theme_override_font_sizes/font_size = 17
+text = "Demo 3D en primera persona"
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="Center/MenuPanel/Content"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 48)
+layout_mode = 2
+text = "Iniciar juego"
+
+[node name="QuitButton" type="Button" parent="Center/MenuPanel/Content"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 48)
+layout_mode = 2
+text = "Salir"

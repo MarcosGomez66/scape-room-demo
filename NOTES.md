@@ -132,3 +132,16 @@ una fortaleza viviente de espinas y pliegues que desafía la sequedad.
 
 - [Hecho] crear el sistema de fin del juego:
 	- que muestre un mensaje de felicitaciones y un boton de reinicio
+
+## menús y salida
+
+- [Hecho] crear el menú inicial:
+	- botones "Iniciar juego" y "Salir"
+	- "Iniciar juego" arranca una partida limpia desde `start_menu.tscn`
+
+- [Hecho] crear el menú de pausa:
+	- Escape abre la ventana con "Reiniciar juego" y "Salir"
+	- Escape vuelve a cerrarla y reanuda la partida
+
+- [Hecho] agregar "Salir" a las ventanas de victoria y game over:
+	- cierra la aplicación desde cualquiera de las cuatro ventanas (inicio, pausa, victoria y game over)

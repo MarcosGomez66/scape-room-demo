@@ -3,7 +3,7 @@
 Demo 3D de escape room en primera persona, **Godot 4.7** (GDScript, Forward+).
 `GDD.md` es la fuente de verdad del diseño (en español): 3 puzles con progresión por
 llaves a través de 5 habitaciones + exterior. `NOTES.md` es el checklist de tareas
-(los tres puzles ya figuran como `[Hecho]`). Documentación y conversación en español;
+(los tres puzles y los menús ya figuran como `[Hecho]`). Documentación y conversación en español;
 identificadores y comentarios de código en inglés.
 
 ## MCP de Godot: cómo está conectado
@@ -30,7 +30,10 @@ El proyecto se opera a través del plugin **Godot MCP Toolkit**
 
 - **No edites a mano un `.tscn` existente.** Usá `scene_create`, `scene_create_node`,
   `node_set_property`, `node_set_script` y **guardá con `editor_save_scene`** (no se
-  guarda solo).
+  guarda solo). `scene_create` **no deja el editor en la escena nueva**: llamá
+  `scene_open({file_path})` antes de agregar nodos y guardá con `editor_save_scene({})`.
+  Usar `editor_save_scene({file_path})` con otra escena activa hace un *save-as* y
+  puede dejar la ruta nueva con el contenido viejo en caché.
 - Escribí/editá `.gd` con `script_write` / `script_edit`: compilan y quedan registrados
   en el editor vivo. `script_check` valida un archivo suelto;
   `lsp_project_diagnostics` valida todo el proyecto.
@@ -46,8 +49,8 @@ invocan directo desde PowerShell. Usá `cmd /c "opencode ..."` (o la variante `.
 
 `scenes/player/Player.tscn` + `scripts/player/player.gd` (`class_name PlayerController`)
 son un **controlador propio mínimo, sin FSM**: WASD para caminar, mantener Shift para
-correr, mouse para mirar, Escape libera/recaptura el mouse. Sin salto, agacharse, slide,
-dash ni vuelo.
+correr, mouse para mirar, Escape (`toggle_mouse`) abre el menú de pausa. Sin salto,
+agacharse, slide, dash ni vuelo.
 
 - Acciones de input definidas en `project.godot` (physical keycodes): `move_forward`,
   `move_backward`, `move_left`, `move_right`, `run`, `toggle_mouse`, `interact` (E),
@@ -115,20 +118,23 @@ Tres autoloads (registrados en `project.godot`) sostienen los puzles:
   `clue_for`, `check_answer`, `mark_solved` y `generate()`. Las 5 imágenes viven en
   `assets/test/img/` (`orquidea_magenta`, `taxi_amarillo`, `globo_azul`,
   `telefono_rojo`, `cactus_verde`), todas de 1200×896.
-- **`GameManager`** (`scripts/managers/game_manager.gd`): `MAX_STRIKES = 3`, `strikes`,
+- **`GameManager`** (`scripts/managers/game_manager.gd`): `MAX_STRIKES = 3`,
+  `LEVEL_SCENE = "res://scenes/test/house_test_level.tscn"`, `strikes`,
   `is_game_over`, `has_won`, señales `strikes_changed(strikes)` / `game_over` /
   `victory`. `add_strike()`, `win_game()` (pausa, muestra el mouse y emite `victory`
-  al salir de la casa) y `restart_game()`, que resetea fallos y victoria, llama
-  `Inventory.clear()` y `PuzzleManager.generate()`, cierra la UI, despausa y recarga
-  la escena actual.
+  al salir de la casa), `start_new_game()` (reseteo + `change_scene_to_file`) y
+  `restart_game()` (reseteo + `reload_current_scene`). Ambos comparten `_reset_run()`:
+  fallos/victoria a cero, `Inventory.clear()`, `PuzzleManager.generate()`,
+  `PuzzleUI.close_all()`, despausa y recaptura el mouse.
 - **`PuzzleUI`** (`scripts/ui/puzzle_ui.gd`): `CanvasLayer` con `layer = 100` y
-  `PROCESS_MODE_ALWAYS`; instancia seis ventanas: `scenes/ui/safe_window.tscn`,
+  `PROCESS_MODE_ALWAYS`; instancia siete ventanas: `scenes/ui/safe_window.tscn`,
   `note_window.tscn`, `game_over_window.tscn`, `card_window.tscn`,
-  `number_lock_window.tscn` y `victory_window.tscn`. Los interactuables llaman
-  `PuzzleUI.open_safe()` / `open_note()` / `open_message(título, texto)` /
-  `open_card()` / `open_lock(lock)`; mientras hay un modal abierto pausa el árbol y
-  muestra el mouse. Escape (`toggle_mouse`) y el botón Cerrar vuelven al juego
-  (salvo en game over y victoria, que solo ofrecen Reiniciar).
+  `number_lock_window.tscn`, `victory_window.tscn` y `pause_window.tscn`. Los
+  interactuables llaman `PuzzleUI.open_safe()` / `open_note()` /
+  `open_message(título, texto)` / `open_card()` / `open_lock(lock)`; el jugador llama
+  `open_pause()` con Escape. Mientras hay un modal abierto pausa el árbol y muestra el
+  mouse. Escape y el botón Cerrar vuelven al juego; en pausa, game over y victoria no
+  se abre una pausa encima (guard de `is_game_over` / `has_won`).
 
 Ventanas:
 
@@ -141,9 +147,27 @@ Ventanas:
   exacto de la solución, formato `1. <pista>`; la pista nunca nombra el objeto ni el
   color.
 - **Game over** (`scripts/ui/game_over_window.gd`): overlay a pantalla completa con
-  botón Reiniciar (`GameManager.restart_game()`), que genera una combinación nueva.
-- **Victoria** (`scripts/ui/victory_window.gd`): overlay de felicitaciones con el
-  mismo botón Reiniciar. Lo muestra `PuzzleUI` al recibir `GameManager.victory`.
+  botones Reiniciar (`GameManager.restart_game()`) y Salir (`get_tree().quit()`).
+- **Victoria** (`scripts/ui/victory_window.gd`): overlay de felicitaciones con los
+  mismos botones Reiniciar y Salir. Lo muestra `PuzzleUI` al recibir
+  `GameManager.victory`.
+- **Pausa** (`scripts/ui/pause_window.gd` + `scenes/ui/pause_window.tscn`): la abre
+  Escape desde el jugador; botones “Reiniciar juego” y “Salir”. Escape la cierra y
+  reanuda. El jugador llama `get_viewport().set_input_as_handled()` al abrirla para
+  que el mismo evento no la cierre en esa propagación.
+
+### Menús y salida
+
+- `project.godot` arranca en `res://scenes/ui/start_menu.tscn` (`run/main_scene`).
+  `scripts/ui/main_menu.gd` (`class_name MainMenu`) conecta “Iniciar juego” a
+  `GameManager.start_new_game()` y “Salir” a `get_tree().quit()`. El nivel jugable
+  sigue siendo `house_test_level.tscn`.
+- El nombre del archivo es `start_menu.tscn` (no `main_menu.tscn`) porque una ruta
+  anterior quedó en caché en el editor con un `HouseTestLevel` Node3D adentro; si se
+  reutiliza esa ruta, `game_start` carga la versión podrida aunque el `.tscn` en disco
+  esté bien.
+- Los botones “Salir” (menú inicial, pausa, victoria y game over) cierran la app con
+  `get_tree().quit()`. En exportaciones web puede no tener efecto.
 
 ### Muebles e interactuables del puzle
 
@@ -300,7 +324,7 @@ El nivel coloca `Wardrobe` en `(-3.05, 0.30, -3.86)`, `Desk` en
   `scene_open`): `game_start` usa la escena en memoria y da falsos positivos.
 - En `scene_spatial_map`, `bounds.position` es la esquina mínima del AABB, no el
   centro: usar `position + size / 2` para razonar sobre bisagras y colisiones.
-- `lsp_project_diagnostics` da 33 archivos escaneados, 33 limpios y sin avisos. Si
+- `lsp_project_diagnostics` da 35 archivos escaneados, 35 limpios y sin avisos. Si
   aparece `SHADOWED_VARIABLE_BASE_CLASS` en `door.gd`, revisar variables locales que
   sombrean propiedades de `Node3D`.
 

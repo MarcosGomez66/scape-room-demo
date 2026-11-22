@@ -2,15 +2,17 @@ extends Control
 
 class_name VictoryWindow
 
-## Full-screen win overlay with a restart button.
+## Full-screen win overlay with restart and quit buttons.
 
 @onready var panel: PanelContainer = %Panel
 @onready var restart_button: Button = %RestartButton
+@onready var quit_button: Button = %QuitButton
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	restart_button.pressed.connect(_on_restart)
+	quit_button.pressed.connect(_on_quit)
 	_build_style()
 	visible = false
 
@@ -21,6 +23,10 @@ func open() -> void:
 
 func _on_restart() -> void:
 	GameManager.restart_game()
+
+
+func _on_quit() -> void:
+	get_tree().quit()
 
 
 func _build_style() -> void:
